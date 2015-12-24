@@ -8,7 +8,7 @@ public class Message {
 	public Message(String messageIn){
 		message = messageIn;
 	}
-	public void outputString(){
+	public void printMessage(){
 		int charsWritten = 0;
 		printLineOfStars();
 		
@@ -29,7 +29,7 @@ public class Message {
 		printLineOfStars();
 				
 	}
-	public void printLineOfStars(){
+	private void printLineOfStars(){
 		for(int i = 0; i<ABSOLUTE_NUMBER_CHARS_PER_LINE; i++){
 			System.out.print("*");
 		}

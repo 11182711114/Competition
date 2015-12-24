@@ -61,7 +61,7 @@ public class Competition {
 		else if(userInput.equals("teams")){				
 		}
 		else if(userInput.contains("message")){
-			//message(userInput);
+			message(userInput);
 		}
 		else if(userInput.equals("reinitialize")){
 			reinitialize();				
@@ -255,6 +255,11 @@ public class Competition {
 	}
 	private void resultByEvent(String eventName){
 		//DO shit
+	}
+	private void message(String s){
+		//make new Message(), start after "message "
+		Message message = new Message(s.substring(8));
+		message.printMessage();
 	}
 	private void reinitialize(){
 		//Reset nrOfRemoved, go through all of the ArrayLists and erase everything
