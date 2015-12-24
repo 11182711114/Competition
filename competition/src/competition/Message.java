@@ -12,15 +12,15 @@ public class Message {
 		int charsWritten = 0;
 		printLineOfStars();
 		
-		while(charsWritten<=message.length()){
+		while(charsWritten<message.length()){
 			System.out.print("* ");
-			for(int i = 0; i<ABSOLUTE_NUMBER_CHARS_PER_LINE; i++){
-				if(charsWritten>=message.length()){
-					System.out.print(" ");
+			for(int i = 0; i<ABSOLUTE_NUMBER_CHARS_PER_LINE-4; i++){
+				if(charsWritten<message.length()){
+					System.out.print(message.substring(charsWritten, charsWritten+1).toUpperCase());
+					charsWritten++;
 				}
 				else{
-					System.out.print(message.substring(charsWritten, charsWritten+1));
-					charsWritten++;
+					System.out.print(" ");
 				}
 			}
 			System.out.println(" *");
@@ -33,5 +33,6 @@ public class Message {
 		for(int i = 0; i<ABSOLUTE_NUMBER_CHARS_PER_LINE; i++){
 			System.out.print("*");
 		}
+		System.out.println();
 	}
 }
