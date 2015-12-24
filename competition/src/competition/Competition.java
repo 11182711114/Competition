@@ -2,7 +2,17 @@ package competition;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/*
+ * TODO;
+ * 	high priority
+ * 		message()
+ * 		team()
+ * 		participant()
+ * 	med priority
+ * 		clean code
+ * 	low priority
+ * 		read from file
+ */
 public class Competition {
 	private ArrayList<Event> events = new ArrayList<Event>();
 	private ArrayList<Result> results = new ArrayList<Result>();
