@@ -1,7 +1,7 @@
 package competition;
 
 public class Message {
-	final private int ABSOLUTE_NUMBER_CHARS_PER_LINE = 60;
+	private static final int ABSOLUTE_NUMBER_CHARS_PER_LINE = 60;
 	
 	private String message;
 	
