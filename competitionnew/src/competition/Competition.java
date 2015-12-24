@@ -1,4 +1,4 @@
-package competitionnew;
+package competition;
 
 public class Competition {
 
