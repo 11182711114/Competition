@@ -15,7 +15,6 @@ import java.util.Scanner;
  */
 public class Competition {
 	private ArrayList<Event> events = new ArrayList<Event>();
-	private ArrayList<Result> results = new ArrayList<Result>();
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	private int nrOfRemoved = 0;
@@ -34,7 +33,7 @@ public class Competition {
 	}
 	
 	private String readCommand(){
-		return normalize(inputString("Lyssnar:"),false,true);
+		return normalize(inputString("Lyssnar:"),2);
 	}
 	
 	private void handleCommands(String userInput){
@@ -99,7 +98,7 @@ public class Competition {
 		boolean incorrectName = false;
 		
 		do{
-			eventName = normalize(inputString("Event name:"),true,false);
+			eventName = normalize(inputString("Event name:"),1);
 			if(eventName==null){
 				incorrectName = true;
 				System.out.println("Error 01:Names cannot be empty!");
@@ -119,7 +118,7 @@ public class Competition {
 		String biggerBetter;
 		boolean incorrectInput = false;
 		do{
-			biggerBetter = normalize(inputString("Bigger better? (Y/N):"),false,true);
+			biggerBetter = normalize(inputString("Bigger better? (Y/N):"),2);
 			if(biggerBetter==null && biggerBetter!="y" && biggerBetter!="n" && biggerBetter!="yes" && biggerBetter!="no"){
 				incorrectInput = true;
 				System.out.println("Error 03: Incorrect input, allowed sepparated by \",\": y,n,yes,no");
@@ -148,9 +147,9 @@ public class Competition {
 	}
 	
 	private void addParticipant(){
-		String gName = normalize(inputString("Participants given name:"),true,false);
-		String fName = normalize(inputString("Participants family name:"),true,false);
-		String tName = normalize(inputString("Participants team name:"),true,false);
+		String gName = normalize(inputString("Participants given name:"),1);
+		String fName = normalize(inputString("Participants family name:"),1);
+		String tName = normalize(inputString("Participants team name:"),1);
 		
 		if(gName != null && fName != null && tName != null){
 			int ID = 100;
@@ -190,8 +189,8 @@ public class Competition {
 	}
 	
 	private void addResult(){
-		int pID = inputNumber("Participants ID:").intValue();
-		String eventName = normalize(inputString("Event name:"),true,false);
+		/*int pID = inputNumber("Participants ID:").intValue();
+		String eventName = normalize(inputString("Event name:"),1);
 		boolean incorrectP = true;
 		boolean incorrectE = true;
 		
@@ -201,18 +200,21 @@ public class Competition {
 			}
 		}
 		Event thisEvent = null;
+		int i = 0;
 		for(Event e : events){
 			if(e.getName() == eventName){
 				incorrectP = false;
 				thisEvent = e;
+				
+				for(Result r : e.getResults()){
+					if(r.getParticipant().getID() == pID){
+						i++;
+					}
+				}
 			}
 		}
-		int i = 0;
-		for(Result r : results){
-			if(r.getID() == pID){
-				i++;
-			}
-		}
+		
+		
 		if(incorrectP){
 			System.out.println("Error 07: Incorrect participant ID given: "+pID);
 			if(incorrectE){
@@ -234,12 +236,12 @@ public class Competition {
 			
 			if(thisEvent!=null){
 				if(!incorrectP && !incorrectE && thisEvent.getTries()>=i){
-					Result newResult = new Result(pID,eventName,thisResult);
-					results.add(newResult);
+					Result newResult = new Result(getParticipantByID(pID),eventName,thisResult);
+					getEventByName(eventName).addResult(newResult);
 					System.out.println("Result: "+ newResult+ " has been added");
 				}
 			}
-		}
+		}*/
 	}
 	private void makeTeam(String name){
 		teams.add(new Team(name));
@@ -256,6 +258,22 @@ public class Competition {
 	private void resultByEvent(String eventName){
 		//DO shit
 	}
+	private Participant getParticipantByID(int id){
+		for(Participant p : participants){
+			if(p.getID() == id){
+				return p;
+			}
+		}
+		return null;
+	}
+	private Event getEventByName(String eName){
+		for(Event e : events){
+			if(e.getName().equals(eName)){
+				return e;
+			}
+		}
+		return null;
+	}
 	private void message(String s){
 		//make new Message(), start after "message "
 		Message message = new Message(s.substring(8));
@@ -267,10 +285,7 @@ public class Competition {
 		
 		for(int i = 0; i<events.size(); i++){
 			events.remove(i);
-		}
-		for(int i = 0; i<results.size(); i++){
-			results.remove(i);
-		}
+		}		
 		for(int i = 0; i<participants.size(); i++){
 			participants.remove(i);
 		}
@@ -299,8 +314,13 @@ public class Competition {
 	 *
 	 *it will remove all forbidden characters
 	 *leave whitespace if it has characters next to it, e.g. "Boo FF"
+	 *
+	 *int case;
+	 *0 = do nothing
+	 *1 = force capitalization
+	 *2 = force all lowercase
 	*/
-	public String normalize(String x,boolean capitalize,boolean forceLowerCase){
+	public String normalize(String x, int c){
 		String output = null;
 		String[] forbidden = {" "};
 		//iterate through the given string		
@@ -335,10 +355,10 @@ public class Competition {
 		}
 		else{
 			//first letter to uppercase	
-			if(capitalize){
+			if(c == 1){
 				return output.substring(0, 1).toUpperCase()+output.substring(1).toLowerCase();
 			}
-			else if(forceLowerCase){
+			else if(c == 2){
 				return output.toLowerCase();
 			}
 			return output;			
