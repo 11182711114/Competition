@@ -1,6 +1,10 @@
 package competition;
 
+import java.util.ArrayList;
+
 public class Event {
+	private ArrayList<Result> results = new ArrayList<Result>();
+	
 	private String eventName;
 	private int attempts;
 	private boolean biggerBetter;
@@ -22,5 +26,10 @@ public class Event {
 	public boolean getComp(){
 		return biggerBetter;		
 	}
-
+	public void addResult(Result r){
+		results.add(r);
+	}
+	public ArrayList<Result> getResults(){
+		return results;
+	}
 }
