@@ -3,26 +3,26 @@ package competition;
 public class Result {
 	private String name;
 	private double results;
-	private int participantID;
+	private Participant participant;
 	
-	public Result(int pNumber, String eName, double result){
+	public Result(Participant inputParticipant, String eName, double result){
 		name = eName;
 		results = result;
-		participantID = pNumber;
+		participant = inputParticipant;
 	}
 	
 	
 	public double getResult(){		
 		return results;		
 	}
-	public int getID(){
-		return participantID;
+	public Participant getParticipant(){
+		return participant;
 	}
 	public String getNameOfEvent(){
 		return name;
 	}
 	@Override
 	public String toString(){
-		return "Result:"+results+" Event name:"+name+" participant ID: "+participantID;
+		return "Result:"+results+" Event name:"+name+" participant ID: "+participant.getID();
 	}
 }
