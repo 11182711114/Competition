@@ -180,9 +180,8 @@ public class Competition {
 		if(i>=0 && i<participants.size()){
 			System.out.println("Removing: "+ participants.get(i));
 			Participant p = participants.get(i);
-			
 			participants.remove(i);
-			
+			p.getTeam().removeParticipant(p);
 			nrOfRemoved++;
 		}
 		else{
