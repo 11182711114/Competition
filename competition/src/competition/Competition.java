@@ -281,7 +281,7 @@ public class Competition {
 		return null;
 	}
 	private void message(String s){
-		//make new Message(), start after "message "
+		//make new Message, start after "message "
 		Message message = new Message(s.substring(8));
 		message.printMessage();
 	}
@@ -294,6 +294,9 @@ public class Competition {
 		}		
 		for(int i = 0; i<participants.size(); i++){
 			participants.remove(i);
+		}
+		for(int i = 0; i<teams.size(); i++){
+			teams.remove(i);
 		}
 	}
 
