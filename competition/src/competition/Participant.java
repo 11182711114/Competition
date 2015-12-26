@@ -3,27 +3,27 @@ package competition;
 public class Participant {
 	private String givenName;
 	private String familyName;
-	private String teamName;
+	private Team team;
 	private int id;
 	
-	public Participant(String gName, String fName, String tName, int tempID){
+	public Participant(String gName, String fName, Team tName, int tempID){
 		givenName = gName;
 		familyName = fName;
-		teamName = tName;
+		team = tName;
 		id = tempID;
 	}
 	public int getID(){
 		return id;		
 	}
 	public String getNames(){
-		return givenName + " " + familyName + " for " + teamName;
+		return givenName + " " + familyName + " for " + team.getTeamName();
 	}
-	public String getTeam(){
-		return teamName;
+	public Team getTeam(){
+		return team;
 	}
 	@Override
 	public String toString(){
-		return "ID:"+id+" "+givenName+" "+familyName+" Team: "+teamName;
+		return "ID:"+id+" "+givenName+" "+familyName+" Team: "+ team.getTeamName();
 	}
 
 }

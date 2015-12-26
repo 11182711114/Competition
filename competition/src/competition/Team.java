@@ -1,6 +1,9 @@
 package competition;
 
+import java.util.ArrayList;
+
 public class Team {
+	private ArrayList<Participant> participants = new ArrayList<Participant>();
 	String name;
 	int[] medals;
 	
@@ -23,6 +26,14 @@ public class Team {
 		for(int i = 0; i<newMedals.length;i++){
 			medals[i]+=newMedals[i];
 		}
+	}
+	//removes given participant from participants and returns true if the array is empty
+	public boolean removeParticipant(Participant p){
+		participants.remove(p);
+		if(participants.isEmpty()){
+			return true;
+		}
+		return false;
 	}
 	
 	

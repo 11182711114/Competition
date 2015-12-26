@@ -153,19 +153,18 @@ public class Competition {
 		
 		if(gName != null && fName != null && tName != null){
 			int ID = 100;
-			
+			Team team = makeTeam(tName);
+			if(team!=null){			
 			if(!participants.isEmpty()){
 				ID = 1+participants.get(participants.size()-1).getID();
 			}				
-			participants.add(new Participant(gName,fName,tName,ID));
-			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");
+			participants.add(new Participant(gName,fName,team,ID));
+			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");}
 		}
 		else{
 			System.out.println("Error 05; null value in add participant");
 			}
-		if(!doesTeamExist(tName)){
-			makeTeam(tName);
-		}
+		
 	}
 	
 	private void removeParticipant(){
@@ -180,7 +179,10 @@ public class Competition {
 		}
 		if(i>=0 && i<participants.size()){
 			System.out.println("Removing: "+ participants.get(i));
+			Participant p = participants.get(i);
+			
 			participants.remove(i);
+			
 			nrOfRemoved++;
 		}
 		else{
@@ -243,8 +245,14 @@ public class Competition {
 			}
 		}*/
 	}
-	private void makeTeam(String name){
-		teams.add(new Team(name));
+	//creates a new team if one with that name does not exist, returns true if makes a team
+	private Team makeTeam(String name){
+		if(doesTeamExist(name)){
+			return null;
+		}
+		Team t = new Team(name);
+		teams.add(t);
+		return t;
 	}
 
 	private boolean doesTeamExist(String name){
