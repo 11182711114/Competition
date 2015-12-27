@@ -19,7 +19,6 @@ public class Database {
 	public Database(Competition c){
 		comp = c;
 		checkDbFolder();
-		file = selectDatabase();
 	}
 	public void writeToFile(ArrayList<Event> events, ArrayList<Participant> part, ArrayList<Team> teams){
 		//if the db already exists, remove it so that it reflects changes made
@@ -50,6 +49,9 @@ public class Database {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+	}
+	public void setDatabase(){
+		file = selectDatabase();
 	}
 	public File selectDatabase(){
 		listDB();
@@ -164,6 +166,14 @@ public class Database {
 	}
 	public boolean databaseExists(){
 		if(file.exists()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	public boolean databaseSelected(){
+		if(file!=null){
 			return true;
 		}
 		else{
