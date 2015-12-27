@@ -36,6 +36,6 @@ public class Team {
 		return false;
 	}
 	public String toDb(){
-		return "|t|"+name;
+		return "|tn|"+name+"|/tn|";
 	}
 }

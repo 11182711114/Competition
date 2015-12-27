@@ -33,6 +33,6 @@ public class Event {
 		return results;
 	}
 	public String toDb(){
-		return "|e|"+eventName+"|a|"+attempts+"|b|"+biggerBetter;
+		return "|e|"+eventName+"|/e|" + "|a|"+attempts+"|/a|" + "|b|"+biggerBetter+"|/b|";
 	}
 }

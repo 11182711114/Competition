@@ -3,11 +3,13 @@ package competition;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Database {
 	private File folder = new File(new File(".").getAbsolutePath()+"/db");
@@ -56,6 +58,49 @@ public class Database {
 	public void checkDbFolder(){
 		if(!folder.exists() && !folder.isDirectory()){
 			folder.mkdir();
+		}
+	}
+	public ArrayList<Participant> getParticipantsFromDb(){
+		ArrayList<Participant> parts = new ArrayList<>();
+		String[] tags = {"|p|","|/p|" , "|f|","|/f|" , "|t|","|/t|" , "|i|","|/i|"};
+		try {
+			Scanner sc = new Scanner(new FileReader(file));
+			while(sc.hasNextLine()){
+				String line = sc.nextLine();
+				if(line.contains(tags[0])){
+					Participant tempParticipant = new Participant(null,null,null,0);
+					for(int i = 0; i<tags.length;i+=2){
+						switch(tags[i]){
+						case "|p|":
+							tempParticipant.setName(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1])));
+							break;
+						case "|f|":
+							tempParticipant.setFamilyName(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1])));
+							break;
+						case "|t|":
+							tempParticipant.setTeam(new Team(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1]))));
+							break;
+						case "|i|":
+							tempParticipant.setID(Integer.parseInt(line.substring(line.indexOf(tags[i])+3,line.indexOf(tags[i+1]))));
+							break;
+						}
+					}
+					parts.add(tempParticipant);
+				}
+			}
+			sc.close();
+			return parts;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public boolean databaseExists(){
+		if(file.exists()){
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
 }
