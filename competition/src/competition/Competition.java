@@ -1,6 +1,5 @@
 package competition;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 /*
@@ -33,12 +32,7 @@ public class Competition {
 	}
 	private void run(){
 		menu();
-		try {
-			while(handleCommands(readCommand())){
-			}
-		} catch (IOException e) {
-			System.out.println("Something went wrong with the database");
-			e.printStackTrace();
+		while(handleCommands(readCommand())){
 		}
 						
 	}
@@ -70,9 +64,7 @@ public class Competition {
 	private String readCommand(){
 		return normalize(inputString("Lyssnar:"),2);
 	}
-	private boolean handleCommands(String userInput) throws IOException{
-					
-			
+	private boolean handleCommands(String userInput){
 		if(userInput.equals("test")){
 			//test();
 		}
