@@ -41,4 +41,8 @@ public class Event {
 	public String toDb(){
 		return "|e|"+eventName+"|/e|" + "|a|"+attempts+"|/a|" + "|b|"+biggerBetter+"|/b|";
 	}
+	public String[] resultTags(){
+		String[] str = {"|r|","|/r|" , "|pID|","|/pID|"};
+		return str;
+	}
 }

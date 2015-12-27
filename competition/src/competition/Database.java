@@ -29,13 +29,15 @@ public class Database {
 		try {
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file,true)));
 			for(Event e : events){
+				ArrayList<Result> results = e.getResults();
+				String[] str = e.resultTags();
 				writer.println(e.toDb());
+				for(Result r : results){
+					writer.println(str[0]+r.getResult()+str[1] + str[2]+r.getParticipant().getID()+str[3]);
+				}
 			}
 			for(Participant p : part){
 				writer.println(p.toDb());
-			}
-			for(Team t : teams){
-				writer.println(t.toDb());
 			}
 			writer.close();
 		} catch (UnsupportedEncodingException e) {
@@ -52,7 +54,7 @@ public class Database {
 	public File selectDatabase(){
 		listDB();
 		//get the path to our folder, ask for file name and append ".db" to it
-		String db = folder.getAbsolutePath() + "/" + comp.inputString("Choose which database to use or make a new one>") + ".db";
+		String db = folder.getAbsolutePath() + "/" + comp.inputString("Choose which database to use or make a new one:") + ".db";
 		return new File(db);
 	}
 	public void listDB(){
