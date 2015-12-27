@@ -28,6 +28,9 @@ public class Database {
 		}
 		try {
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file,true)));
+			for(Participant p : part){
+				writer.println(p.toDb());
+			}
 			for(Event e : events){
 				ArrayList<Result> results = e.getResults();
 				String[] str = e.resultTags();
@@ -35,9 +38,6 @@ public class Database {
 				for(Result r : results){
 					writer.println(str[0]+r.getResult()+str[1] + str[2]+r.getParticipant().getID()+str[3]);
 				}
-			}
-			for(Participant p : part){
-				writer.println(p.toDb());
 			}
 			writer.close();
 		} catch (UnsupportedEncodingException e) {
@@ -83,16 +83,16 @@ public class Database {
 					for(int i = 0; i<tags.length;i+=2){
 						switch(tags[i]){
 						case "|p|":
-							tempParticipant.setName(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1])));
+							tempParticipant.setName(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1])));
 							break;
 						case "|f|":
-							tempParticipant.setFamilyName(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1])));
+							tempParticipant.setFamilyName(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1])));
 							break;
 						case "|t|":
-							tempParticipant.setTeam(new Team(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1]))));
+							tempParticipant.setTeam(new Team(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1]))));
 							break;
 						case "|i|":
-							tempParticipant.setID(Integer.parseInt(line.substring(line.indexOf(tags[i])+3,line.indexOf(tags[i+1]))));
+							tempParticipant.setID(Integer.parseInt(line.substring(line.indexOf(tags[i])+tags[i].length(),line.indexOf(tags[i+1]))));
 							break;
 						}
 					}
@@ -109,27 +109,50 @@ public class Database {
 	public ArrayList<Event> getEventsFromDb(){
 		ArrayList<Event> events = new ArrayList<>();
 		String[] tags = {"|e|","|/e|" , "|a|","|/a|" , "|b|","|/b|"};
+		String[] resultTags = null;
 		try {
 			Scanner sc = new Scanner(new FileReader(file));
 			while(sc.hasNextLine()){
 				String line = sc.nextLine();
 				if(line.contains(tags[0])){
 					Event tempEvent = new Event(null,0,false);
+					resultTags = tempEvent.resultTags();
 					//iterate by 2 since tags are in pairs
 					for(int i = 0; i<tags.length;i+=2){
 						switch(tags[i]){
 						case "|e|":
-							tempEvent.setName(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1])));
+							tempEvent.setName(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1])));
 							break;
 						case "|a|":
-							tempEvent.setTries(Integer.parseInt(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1]))));
+							tempEvent.setTries(Integer.parseInt(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1]))));
 							break;
 						case "|b|":
-							tempEvent.setIsBiggerBetter(Boolean.parseBoolean(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1]))));
+							tempEvent.setIsBiggerBetter(Boolean.parseBoolean(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1]))));
 							break;
 						}
 					}
 					events.add(tempEvent);
+				}
+				else if(resultTags!=null && line.contains(resultTags[0])){
+					Result tempResult = new Result(null,null,0);
+					for(int i = 0; i<resultTags.length;i+=2){
+						switch(resultTags[i]){
+						case "|r|":
+							String s = line.substring(line.indexOf(resultTags[i])+resultTags[i].length(), line.indexOf(resultTags[i+1]));
+							double d = Double.parseDouble(s);
+							tempResult.setResult(d);
+							//tempResult.setResult(Double.parseDouble(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1]))));
+							break;
+						case "|pID|":
+							int index1 = line.indexOf(resultTags[i])+resultTags[i].length();
+							int index2 = line.indexOf(resultTags[i+1]);
+							String s1 = line.substring(index1, index2);
+							int i1 = Integer.parseInt(s1);
+							tempResult.setParticipant(comp.getParticipantByID(i1));
+							break;
+						}
+					}
+					events.get(events.size()-1).addResult(tempResult);
 				}
 			}
 			sc.close();

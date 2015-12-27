@@ -54,6 +54,9 @@ public class Competition {
 			if(!events.isEmpty()){
 				for(Event e : events){
 					addEvent(e.getName(),e.getTries(),e.isBiggerBetter());
+					for(Result r : e.getResults()){
+						getEventByName(e.getName()).addResult(r);
+					}
 				}
 			}
 		}
@@ -326,7 +329,7 @@ public class Competition {
 	private void resultByEvent(String eventName){
 		//DO shit
 	}
-	private Participant getParticipantByID(int id){
+	public Participant getParticipantByID(int id){
 		for(Participant p : participants){
 			if(p.getID() == id){
 				return p;
