@@ -46,12 +46,7 @@ public class Competition {
 		saveDb();
 	}
 	private void saveDb(){
-		try {
-			db.writeToFile(events, participants,teams);
-		} catch (IOException e) {
-			System.out.println("Something wrong when saving to db");
-			e.printStackTrace();
-		}
+		db.writeToFile(events, participants,teams);
 	}
 	private void loadDb(){
 		if(db.databaseExists()){
