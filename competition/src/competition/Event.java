@@ -23,8 +23,14 @@ public class Event {
 	public boolean isBiggerBetter(){
 		return biggerBetter;
 	}
-	public boolean getComp(){
-		return biggerBetter;		
+	public void setName(String s){
+		eventName = s;
+	}
+	public void setTries(int i){
+		attempts = i;		
+	}
+	public void setIsBiggerBetter(boolean iBB){
+		biggerBetter = iBB;
 	}
 	public void addResult(Result r){
 		results.add(r);

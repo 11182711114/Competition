@@ -95,6 +95,38 @@ public class Database {
 		}
 		return null;
 	}
+	public ArrayList<Event> getEventsFromDb(){
+		ArrayList<Event> events = new ArrayList<>();
+		String[] tags = {"|e|","|/e|" , "|a|","|/a|" , "|b|","|/b|"};
+		try {
+			Scanner sc = new Scanner(new FileReader(file));
+			while(sc.hasNextLine()){
+				String line = sc.nextLine();
+				if(line.contains(tags[0])){
+					Event tempEvent = new Event(null,0,false);
+					for(int i = 0; i<tags.length;i+=2){
+						switch(tags[i]){
+						case "|e|":
+							tempEvent.setName(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1])));
+							break;
+						case "|a|":
+							tempEvent.setTries(Integer.parseInt(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1]))));
+							break;
+						case "|b|":
+							tempEvent.setIsBiggerBetter(Boolean.parseBoolean(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1]))));
+							break;
+						}
+					}
+					events.add(tempEvent);
+				}
+			}
+			sc.close();
+			return events;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public boolean databaseExists(){
 		if(file.exists()){
 			return true;

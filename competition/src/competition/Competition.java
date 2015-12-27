@@ -21,7 +21,7 @@ public class Competition {
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	private int nrOfRemoved = 0;
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args){
 		Competition thisCompetition = new Competition();
 		thisCompetition.initialize(thisCompetition);
 		thisCompetition.run();	
@@ -31,9 +31,14 @@ public class Competition {
 		db = new Database(c);
 		loadDb();
 	}
-	private void run() throws IOException{
+	private void run(){
 		menu();
-		while(handleCommands(readCommand())){
+		try {
+			while(handleCommands(readCommand())){
+			}
+		} catch (IOException e) {
+			System.out.println("Something went wrong with the database");
+			e.printStackTrace();
 		}
 						
 	}
@@ -44,7 +49,7 @@ public class Competition {
 		try {
 			db.writeToFile(events, participants,teams);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Something wrong when saving to db");
 			e.printStackTrace();
 		}
 	}
@@ -54,6 +59,12 @@ public class Competition {
 			if(!parts.isEmpty()){
 				for(Participant p : parts){
 					addParticipant(p.getName(),p.getFamilyName(),p.getTeam().getTeamName(),p.getID());
+				}
+			}
+			ArrayList<Event> events = db.getEventsFromDb();
+			if(!events.isEmpty()){
+				for(Event e : events){
+					addEvent(e.getName(),e.getTries(),e.isBiggerBetter());
 				}
 			}
 		}
@@ -114,8 +125,7 @@ public class Competition {
 			}
 		}
 		return true;	
-	}
-	
+	}	
 	private void menu(){
 		System.out.println("Availible options, non case-sensitive;");
 		//System.out.println("\"test\" - enters test mode with several predefined participants, events and results");
@@ -178,7 +188,24 @@ public class Competition {
 			System.out.println(thisEvent.getName()+" added");
 		}
 	}
-	
+	private void addEvent(String name, int tries, boolean iBB){
+		String eventName = name;
+		int attempts = tries;
+		boolean isBiggerBetter = iBB;
+		
+		Event thisEvent = new Event(eventName,attempts,isBiggerBetter);
+		boolean alreadyExists = false;
+		String eName = thisEvent.getName();
+		
+		for(Event e: events){					
+			if(e.getName().equals(eName)){
+				alreadyExists = true;
+			}						
+		}
+		if(!alreadyExists){
+			events.add(thisEvent);
+		}
+	}
 	private void addParticipant(){
 		String gName = normalize(inputString("Participants given name:"),1);
 		String fName = normalize(inputString("Participants family name:"),1);
@@ -301,7 +328,6 @@ public class Competition {
 		teams.add(t);
 		return t;
 	}
-
 	private boolean doesTeamExist(String name){
 		for(Team team : teams){
 			if(team.getTeamName().equals(name)){
@@ -348,14 +374,12 @@ public class Competition {
 			teams.remove(i);
 		}
 	}
-
 	public String inputString(String inputString){
 		@SuppressWarnings("resource")
 		Scanner tangentbord = new Scanner(System.in);
 		System.out.print(inputString);
 		return tangentbord.nextLine();		
 	}
-
 	public Double inputNumber(String inputNumber){		
 		@SuppressWarnings("resource")
 		Scanner tangentbord = new Scanner(System.in);
