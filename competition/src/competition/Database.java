@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class Database {
 	private File folder = new File(new File(".").getAbsolutePath()+"/db");
-	//private File folder = new File("src/competition/db/");
 	private File file;
 	private Competition comp;
 	
@@ -44,7 +43,6 @@ public class Database {
 	public File selectDatabase(){
 		listDB();
 		String db = folder.getAbsolutePath() + "/" + comp.inputString("Choose which database to use or make a new one>") + ".db";
-		System.out.println(db);
 		return new File(db);
 	}
 	public void listDB(){
