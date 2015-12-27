@@ -265,8 +265,8 @@ public class Competition {
 		Event thisEvent = null;
 		int i = 0;
 		for(Event e : events){
-			if(e.getName() == eventName){
-				incorrectP = false;
+			if(e.getName().equalsIgnoreCase(eventName)){
+				incorrectE = false;
 				thisEvent = e;
 				
 				for(Result r : e.getResults()){
@@ -294,7 +294,7 @@ public class Competition {
 				if(attempts>0){
 					System.out.println("Error 09: Incorrect input, only results >0 accepted");						
 				}					
-				thisResult = inputNumber("Result as decimal number");
+				thisResult = inputNumber("Result as decimal number:");
 			}while(thisResult<0);
 			
 			if(thisEvent!=null){
