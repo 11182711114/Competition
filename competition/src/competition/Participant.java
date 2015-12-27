@@ -25,5 +25,8 @@ public class Participant {
 	public String toString(){
 		return "ID:"+id+" "+givenName+" "+familyName+" Team: "+ team.getTeamName();
 	}
+	public String toDb(){
+		return "|p|"+givenName+"|f|"+familyName+"|t|"+team.getTeamName()+"|i|"+id;
+	}
 
 }

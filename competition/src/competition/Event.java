@@ -32,4 +32,7 @@ public class Event {
 	public ArrayList<Result> getResults(){
 		return results;
 	}
+	public String toDb(){
+		return "|e|"+eventName+"|a|"+attempts+"|b|"+biggerBetter;
+	}
 }

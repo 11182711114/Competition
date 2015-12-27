@@ -1,5 +1,6 @@
 package competition;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 /*
@@ -17,25 +18,38 @@ public class Competition {
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	private int nrOfRemoved = 0;
+	Database db;
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException{
 		Competition thisCompetition = new Competition();
+		thisCompetition.initialize(thisCompetition);
 		thisCompetition.run();	
+		thisCompetition.exit();
 	}
-	
-	private void run(){
+	private void initialize(Competition c){
+		db = new Database(c);
+	}
+	private void run() throws IOException{
 		menu();
-		while(true){
-			handleCommands(readCommand());
+		while(handleCommands(readCommand())){
 		}
 						
 	}
-	
+	private void exit(){
+		saveDb();
+	}
+	private void saveDb(){
+		try {
+			db.writeToFile(events, participants,teams);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private String readCommand(){
 		return normalize(inputString("Lyssnar:"),2);
 	}
-	
-	private void handleCommands(String userInput){
+	private boolean handleCommands(String userInput) throws IOException{
 					
 			
 		if(userInput.equals("test")){
@@ -65,7 +79,7 @@ public class Competition {
 			reinitialize();				
 		}
 		else if(userInput.equals("exit")){
-			System.exit(0);
+			return false;
 		}
 		else{				
 			boolean wrongInput = true;
@@ -80,7 +94,8 @@ public class Competition {
 				System.out.println("Error 00; wrong input given");
 				menu();
 			}
-		}	
+		}
+		return true;	
 	}
 	
 	private void menu(){
