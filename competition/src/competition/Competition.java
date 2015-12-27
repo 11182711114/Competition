@@ -157,14 +157,14 @@ public class Competition {
 		boolean incorrectInput = false;
 		do{
 			biggerBetter = normalize(inputString("Bigger better? (Y/N):"),2);
-			if(biggerBetter==null && biggerBetter!="y" && biggerBetter!="n" && biggerBetter!="yes" && biggerBetter!="no"){
+			if(!biggerBetter.equals("y") && !biggerBetter.equals("n") && !biggerBetter.equals("yes") && !biggerBetter.equals("no")){
 				incorrectInput = true;
 				System.out.println("Error 03: Incorrect input, allowed sepparated by \",\": y,n,yes,no");
 			}
 		}while(incorrectInput);
 		
 		boolean isBiggerBetter = false;
-		if(biggerBetter=="Y" || biggerBetter=="Yes"){
+		if(biggerBetter.equals("y") || biggerBetter.equals("yes")){
 			isBiggerBetter = true;
 		}
 		
@@ -392,7 +392,7 @@ public class Competition {
 	 *it will remove all forbidden characters
 	 *leave whitespace if it has characters next to it, e.g. "Boo FF"
 	 *
-	 *int case;
+	 *int c;
 	 *0 = do nothing
 	 *1 = force capitalization
 	 *2 = force all lowercase
