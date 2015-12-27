@@ -189,7 +189,7 @@ public class Competition {
 	}
 	
 	private void addResult(){
-		/*int pID = inputNumber("Participants ID:").intValue();
+		int pID = inputNumber("Participants ID:").intValue();
 		String eventName = normalize(inputString("Event name:"),1);
 		boolean incorrectP = true;
 		boolean incorrectE = true;
@@ -241,7 +241,7 @@ public class Competition {
 					System.out.println("Result: "+ newResult+ " has been added");
 				}
 			}
-		}*/
+		}
 	}
 	//creates a new team if one with that name does not exist, returns true if makes a team
 	private Team makeTeam(String name){
