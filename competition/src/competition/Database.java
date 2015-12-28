@@ -17,7 +17,7 @@ public class Database {
 		comp = c;
 		checkDbFolder();
 	}
-	public void writeToFile(ArrayList<Event> events, ArrayList<Participant> part, ArrayList<Team> teams){
+	public void writeToFile(ArrayList<Event> events, ArrayList<Participant> part){
 		//if the db already exists, remove it so that it reflects changes made
 		if(file.exists()){
 			file.delete();

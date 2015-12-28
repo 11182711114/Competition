@@ -10,7 +10,7 @@ public class Team {
 		name = teamName;				
 	}
 	
-	public String getTeamName(){
+	public String getName(){
 		return name;
 	}
 	//removes given participant from participants and returns true if the array is empty
@@ -20,6 +20,15 @@ public class Team {
 			return true;
 		}
 		return false;
+	}
+	public boolean addParticipant(Participant p){
+		if(participants.contains(p)){
+			return false;
+		}
+		else{
+			participants.add(p);
+			return true;
+		}
 	}
 	public String toDb(){
 		return "|tn|"+name+"|/tn|";

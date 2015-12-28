@@ -19,7 +19,6 @@ public class Competition {
 	private EventHandler eventHandler;
 	
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
-	private ArrayList<Team> teams = new ArrayList<Team>();
 	private int nrOfRemoved = 0;
 	
 	
@@ -46,7 +45,7 @@ public class Competition {
 	//database functions
 	private void saveDb(){
 		if(db.databaseSelected()){
-			db.writeToFile(eventHandler.getAllEvents(), participants,teams);
+			db.writeToFile(eventHandler.getAllEvents(), participants);
 		}
 	}
 	private void loadDb(){
@@ -57,7 +56,7 @@ public class Competition {
 			ArrayList<Participant> parts = db.getParticipantsFromDb();
 			if(!parts.isEmpty()){
 				for(Participant p : parts){
-					addParticipant(p.getName(),p.getFamilyName(),p.getTeam().getTeamName(),p.getID());
+					addParticipant(p.getName(),p.getFamilyName(),p.getTeam().getName(),p.getID());
 				}
 			}
 			ArrayList<Event> events = db.getEventsFromDb();
@@ -145,7 +144,6 @@ public class Competition {
 		
 		eventHandler.reinitialize();
 		participants.clear();
-		teams.clear();
 	}
 	private void message(String s){
 		//make new Message, start after "message "
@@ -237,8 +235,10 @@ public class Competition {
 			if(team!=null){			
 			if(!participants.isEmpty()){
 				ID = 1+participants.get(participants.size()-1).getID();
-			}				
-			participants.add(new Participant(gName,fName,team,ID));
+			}
+			Participant newParticipant = new Participant(gName,fName,team,ID);
+			participants.add(newParticipant);
+			team.addParticipant(newParticipant);
 			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");}
 		}
 		else{
@@ -350,19 +350,20 @@ public class Competition {
 	}
 		//team functions
 	private Team makeTeam(String name){//creates a new team if one with that name does not exist, returns true if makes a team
-		if(doesTeamExist(name)){
-			return null;
+		Team t = doesTeamExist(name);
+		if(t==null){
+			return new Team(name);
 		}
-		Team t = new Team(name);
-		teams.add(t);
-		return t;
+		else{
+			return t;
+		}
 	}
-	private boolean doesTeamExist(String name){
-		for(Team team : teams){
-			if(team.getTeamName().equals(name)){
-				return true;
+	private Team doesTeamExist(String name){
+		for(Participant p : participants){
+			if(p.getTeamName().equals(name)){
+				return p.getTeam();
 			}
 		}
-		return false;
+		return null;
 	}
 }
