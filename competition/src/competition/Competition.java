@@ -13,12 +13,15 @@ import java.util.Scanner;
  * 		read from file
  */
 public class Competition {
+	private static final int MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE = 60;
+	
 	private Database db;
 	private EventHandler eventHandler;
 	
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	private int nrOfRemoved = 0;
+	
 	
 	public static void main(String[] args){
 		Competition thisCompetition = new Competition();
@@ -147,7 +150,7 @@ public class Competition {
 	private void message(String s){
 		//make new Message, start after "message "
 		Message message = new Message(s.substring(8));
-		message.printMessage();
+		message.printInBoxOfStars(MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE);
 	}
 			//public functions
 	public String inputString(String inputString){

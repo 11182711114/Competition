@@ -1,20 +1,20 @@
 package competition;
 
 public class Message {
-	private static final int ABSOLUTE_NUMBER_CHARS_PER_LINE = 60;
+	
 	
 	private String message;
 	
 	public Message(String messageIn){
 		message = messageIn;
 	}
-	public void printMessage(){
+	public void printInBoxOfStars(int numberOfStars){
 		int charsWritten = 0;
-		printLineOfStars();
+		printLineOfStars(numberOfStars);
 		
 		while(charsWritten<message.length()){
 			System.out.print("* ");
-			for(int i = 0; i<ABSOLUTE_NUMBER_CHARS_PER_LINE-4; i++){
+			for(int i = 0; i<numberOfStars-4; i++){
 				if(charsWritten<message.length()){
 					System.out.print(message.substring(charsWritten, charsWritten+1).toUpperCase());
 					charsWritten++;
@@ -26,11 +26,11 @@ public class Message {
 			System.out.println(" *");
 		}
 			
-		printLineOfStars();
+		printLineOfStars(numberOfStars);
 				
 	}
-	private void printLineOfStars(){
-		for(int i = 0; i<ABSOLUTE_NUMBER_CHARS_PER_LINE; i++){
+	private void printLineOfStars(int numberOfStars){
+		for(int i = 0; i<numberOfStars; i++){
 			System.out.print("*");
 		}
 		System.out.println();
