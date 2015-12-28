@@ -32,6 +32,9 @@ public class Result implements Comparable<Result>{
 	public String getParticipantName(){
 		return participant.getName()+" "+participant.getFamilyName();
 	}
+	public String getTeamName(){
+		return participant.getTeamName();
+	}
 	/*public int compare(Result a, Result b){
 		double compare = a.getResult()-b.getResult();
 		if(compare<0){

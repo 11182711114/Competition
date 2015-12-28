@@ -102,13 +102,13 @@ public class EventHandler {
 			for(int i = 0; i<sortedResults.size();i++){
 				//if this result is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
 				if(1+i<sortedResults.size() && skipNextNumbers==0 && sortedResults.get(i).getResult()==sortedResults.get(i+1).getResult()){
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName());
+					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
 					skipNextNumbers++;
 					printNext = true;
 				}
 				//if this result and the one before was equal print this with the same index and increase placementIndex
 				else if(printNext){
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName());
+					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
 					printNext = false;
 					placementIndex++;
 				}
@@ -120,7 +120,7 @@ public class EventHandler {
 				}			
 				//if the result is not equal to the next we print it out at placementIndex
 				else{
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName());
+					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
 					placementIndex++;
 				}		
 			}
