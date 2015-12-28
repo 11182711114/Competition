@@ -75,7 +75,7 @@ public class Competition {
 	}
 	//run functions
 	private String readCommand(){
-		return normalize(inputString("Lyssnar:"),2);
+		return normalize(inputString("Listening:"),2);
 	}
 	private boolean handleCommands(String userInput){
 		if(userInput.equals("load")){
@@ -112,11 +112,10 @@ public class Competition {
 		}
 		else{				
 			boolean wrongInput = true;
-			System.out.println(userInput);
 			for(Event thisEvent : eventHandler.getAllEvents()){
 				if(thisEvent.getName().equalsIgnoreCase(userInput)){
 					wrongInput = false;
-					//resultByEvent(userInput);
+					printResultByEvent(userInput);
 				}										
 			}
 			if(wrongInput){
@@ -149,6 +148,11 @@ public class Competition {
 		//make new Message, start after "message "
 		Message message = new Message(s.substring(8));
 		message.printInBoxOfStars(MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE);
+	}
+	private void printResultByEvent(String eventName){
+		ArrayList<Result> resultToPrint = eventHandler.eventUniqueResults(eventName);
+		System.out.println("Results for " + normalize(eventName,1));
+		eventHandler.printResults(resultToPrint);
 	}
 			//public functions
 	public String inputString(String inputString){
@@ -335,7 +339,5 @@ public class Competition {
 				}
 			}
 		}
-	}
-		//team functions
-	
+	}	
 }
