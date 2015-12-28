@@ -19,6 +19,7 @@ public class Competition {
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	private int nrOfRemoved = 0;
+	private String "blalablal";
 	
 	public static void main(String[] args){
 		Competition thisCompetition = new Competition();
