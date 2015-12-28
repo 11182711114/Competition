@@ -56,7 +56,7 @@ public class Competition {
 			ArrayList<Participant> parts = db.getParticipantsFromDb();
 			if(!parts.isEmpty()){
 				for(Participant p : parts){
-					addParticipant(p.getName(),p.getFamilyName(),p.getTeam().getName(),p.getID());
+					participants.add(new Participant(p.getName(),p.getFamilyName(),p.getTeamName(),p.getID(),this));
 				}
 			}
 			ArrayList<Event> events = db.getEventsFromDb();
@@ -85,7 +85,7 @@ public class Competition {
 			eventHandler.addEvent();
 		}			
 		else if(userInput.equals("add participant")){
-			addParticipant();
+			addParticipant(this);
 		}
 		else if(userInput.equals("remove participant")){
 			removeParticipant();
@@ -223,40 +223,28 @@ public class Competition {
 			return output;			
 		}		
 	}
+	public ArrayList<Participant> getParticipants(){
+		return participants;
+	}
 		//participant functions
-	private void addParticipant(){
+	private void addParticipant(Competition c){
 		String gName = normalize(inputString("Participants given name:"),1);
 		String fName = normalize(inputString("Participants family name:"),1);
 		String tName = normalize(inputString("Participants team name:"),1);
 		
 		if(gName != null && fName != null && tName != null){
-			int ID = 100;
-			Team team = makeTeam(tName);
-			if(team!=null){			
+			int ID = 100;		
 			if(!participants.isEmpty()){
 				ID = 1+participants.get(participants.size()-1).getID();
 			}
-			Participant newParticipant = new Participant(gName,fName,team,ID);
+			Participant newParticipant = new Participant(gName,fName,"lol",ID,c);
 			participants.add(newParticipant);
-			team.addParticipant(newParticipant);
-			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");}
+			newParticipant.addParticipantToTeam();
+			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");
 		}
 		else{
 			System.out.println("Error 05; null value in add participant");
 			}
-	}
-	private void addParticipant(String g, String f, String t, int id){
-		String gName = g;
-		String fName = f;
-		String tName = t;
-		int ID = id;
-		
-		if(gName != null && fName != null && tName != null){
-			Team team = makeTeam(tName);
-			if(team!=null){			
-				participants.add(new Participant(gName,fName,team,ID));
-			}
-		}
 	}
 	private void removeParticipant(){
 		int removedID = inputNumber("Participant ID to be removed:").intValue();
@@ -349,21 +337,5 @@ public class Competition {
 		}
 	}
 		//team functions
-	private Team makeTeam(String name){//creates a new team if one with that name does not exist, returns true if makes a team
-		Team t = doesTeamExist(name);
-		if(t==null){
-			return new Team(name);
-		}
-		else{
-			return t;
-		}
-	}
-	private Team doesTeamExist(String name){
-		for(Participant p : participants){
-			if(p.getTeamName().equals(name)){
-				return p.getTeam();
-			}
-		}
-		return null;
-	}
+	
 }

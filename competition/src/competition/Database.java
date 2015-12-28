@@ -66,7 +66,7 @@ public class Database {
 			while(sc.hasNextLine()){
 				String line = sc.nextLine();
 				if(line.contains(tags[0])){
-					Participant tempParticipant = new Participant(null,null,null,0);
+					Participant tempParticipant = new Participant(null,null,"",0,comp);
 					//iterate by 2 since tags are in pairs
 					for(int i = 0; i<tags.length;i+=2){
 						switch(tags[i]){
