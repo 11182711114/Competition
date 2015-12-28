@@ -26,6 +26,7 @@ public class Competition {
 		thisCompetition.run();	
 		thisCompetition.exit();
 	}
+	//main functions
 	private void initialize(Competition c){
 		db = new Database(c);
 		eventHandler = new EventHandler(c);
@@ -39,6 +40,7 @@ public class Competition {
 	private void exit(){
 		saveDb();
 	}
+	//database functions
 	private void saveDb(){
 		if(db.databaseSelected()){
 			db.writeToFile(eventHandler.getAllEvents(), participants,teams);
@@ -69,6 +71,7 @@ public class Competition {
 			System.out.println("New database, nothing to load");
 		}
 	}
+	//run functions
 	private String readCommand(){
 		return normalize(inputString("Lyssnar:"),2);
 	}
@@ -111,7 +114,7 @@ public class Competition {
 			for(Event thisEvent : eventHandler.getAllEvents()){
 				if(thisEvent.getName().equalsIgnoreCase(userInput)){
 					wrongInput = false;
-					resultByEvent(userInput);
+					//resultByEvent(userInput);
 				}										
 			}
 			if(wrongInput){
@@ -131,153 +134,8 @@ public class Competition {
 		System.out.println("\"add result\" - adds a result for a participant, by ID, for a specific event, by name");
 		System.out.println("$eventName - shows the result for given event");
 	}
-	private void addParticipant(){
-		String gName = normalize(inputString("Participants given name:"),1);
-		String fName = normalize(inputString("Participants family name:"),1);
-		String tName = normalize(inputString("Participants team name:"),1);
-		
-		if(gName != null && fName != null && tName != null){
-			int ID = 100;
-			Team team = makeTeam(tName);
-			if(team!=null){			
-			if(!participants.isEmpty()){
-				ID = 1+participants.get(participants.size()-1).getID();
-			}				
-			participants.add(new Participant(gName,fName,team,ID));
-			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");}
-		}
-		else{
-			System.out.println("Error 05; null value in add participant");
-			}
-	}
-	private void addParticipant(String g, String f, String t, int id){
-		String gName = g;
-		String fName = f;
-		String tName = t;
-		int ID = id;
-		
-		if(gName != null && fName != null && tName != null){
-			Team team = makeTeam(tName);
-			if(team!=null){			
-				participants.add(new Participant(gName,fName,team,ID));
-			}
-		}
-	}
-	private void removeParticipant(){
-		int removedID = inputNumber("Participant ID to be removed:").intValue();
-		
-		int i = 0;				
-		for(Participant p: participants){
-			if(p.getID()==(removedID)){
-				break;
-			}
-			i++;
-		}
-		if(i>=0 && i<participants.size()){
-			System.out.println("Removing: "+ participants.get(i));
-			Participant p = participants.get(i);
-			participants.remove(i);
-			p.getTeam().removeParticipant(p);
-			nrOfRemoved++;
-		}
-		else{
-			System.out.println("Error 06: No participant with ID: "+removedID);										
-		}
-	}
-	private void listParticipants(){
-		for(Participant p : participants){
-			System.out.println(p.toString());
-		}
-	}
-	private void addResult(){
-		int pID = inputNumber("Participants ID:").intValue();
-		String eventName = normalize(inputString("Event name:"),1);
-		boolean incorrectP = true;
-		boolean incorrectE = true;
-		
-		for(Participant p : participants){
-			if(p.getID() == pID){
-				incorrectP = false;
-			}
-		}
-		Event thisEvent = null;
-		int i = 0;
-		for(Event e : eventHandler.getAllEvents()){
-			if(e.getName().equalsIgnoreCase(eventName)){
-				incorrectE = false;
-				thisEvent = e;
-				
-				for(Result r : e.getResults()){
-					if(r.getParticipant().getID() == pID){
-						i++;
-					}
-				}
-			}
-		}
-		
-		
-		if(incorrectP){
-			System.out.println("Error 07: Incorrect participant ID given: "+pID);
-			if(incorrectE){
-				System.out.println("Error 08: Incorrect event name given: "+eventName);
-			}
-		}
-		else if(incorrectE){
-			System.out.println("Error 08: Incorrect event name given");
-		}
-		else{
-			double thisResult;
-			int attempts = 0;
-			do{
-				if(attempts>0){
-					System.out.println("Error 09: Incorrect input, only results >0 accepted");						
-				}					
-				thisResult = inputNumber("Result as decimal number:");
-			}while(thisResult<0);
-			
-			if(thisEvent!=null){
-				if(!incorrectP && !incorrectE && thisEvent.getTries()>=i){
-					Result newResult = new Result(getParticipantByID(pID),eventName,thisResult);
-					eventHandler.getEventByName(eventName).addResult(newResult);
-					System.out.println("Result: "+ newResult+ " has been added");
-				}
-			}
-		}
-	}
-	//creates a new team if one with that name does not exist, returns true if makes a team
-	private Team makeTeam(String name){
-		if(doesTeamExist(name)){
-			return null;
-		}
-		Team t = new Team(name);
-		teams.add(t);
-		return t;
-	}
-	private boolean doesTeamExist(String name){
-		for(Team team : teams){
-			if(team.getTeamName().equals(name)){
-				return true;
-			}
-		}
-		return false;
-	}
-	private void resultByEvent(String eventName){
-		//DO shit
-	}
-	public Participant getParticipantByID(int id){
-		for(Participant p : participants){
-			if(p.getID() == id){
-				return p;
-			}
-		}
-		return null;
-	}
-	
-	private void message(String s){
-		//make new Message, start after "message "
-		Message message = new Message(s.substring(8));
-		message.printMessage();
-	}
+	//program functions
+		//basic functions
 	private void reinitialize(){
 		//Reset nrOfRemoved, go through all of the ArrayLists and erase everything
 		nrOfRemoved=0;
@@ -286,6 +144,12 @@ public class Competition {
 		participants.clear();
 		teams.clear();
 	}
+	private void message(String s){
+		//make new Message, start after "message "
+		Message message = new Message(s.substring(8));
+		message.printMessage();
+	}
+			//public functions
 	public String inputString(String inputString){
 		@SuppressWarnings("resource")
 		Scanner tangentbord = new Scanner(System.in);
@@ -358,5 +222,144 @@ public class Competition {
 			return output;			
 		}		
 	}
-
+		//participant functions
+	private void addParticipant(){
+		String gName = normalize(inputString("Participants given name:"),1);
+		String fName = normalize(inputString("Participants family name:"),1);
+		String tName = normalize(inputString("Participants team name:"),1);
+		
+		if(gName != null && fName != null && tName != null){
+			int ID = 100;
+			Team team = makeTeam(tName);
+			if(team!=null){			
+			if(!participants.isEmpty()){
+				ID = 1+participants.get(participants.size()-1).getID();
+			}				
+			participants.add(new Participant(gName,fName,team,ID));
+			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");}
+		}
+		else{
+			System.out.println("Error 05; null value in add participant");
+			}
+	}
+	private void addParticipant(String g, String f, String t, int id){
+		String gName = g;
+		String fName = f;
+		String tName = t;
+		int ID = id;
+		
+		if(gName != null && fName != null && tName != null){
+			Team team = makeTeam(tName);
+			if(team!=null){			
+				participants.add(new Participant(gName,fName,team,ID));
+			}
+		}
+	}
+	private void removeParticipant(){
+		int removedID = inputNumber("Participant ID to be removed:").intValue();
+		
+		int i = 0;				
+		for(Participant p: participants){
+			if(p.getID()==(removedID)){
+				break;
+			}
+			i++;
+		}
+		if(i>=0 && i<participants.size()){
+			System.out.println("Removing: "+ participants.get(i));
+			Participant p = participants.get(i);
+			participants.remove(i);
+			p.getTeam().removeParticipant(p);
+			nrOfRemoved++;
+		}
+		else{
+			System.out.println("Error 06: No participant with ID: "+removedID);										
+		}
+	}
+	private void listParticipants(){
+		for(Participant p : participants){
+			System.out.println(p.toString());
+		}
+	}
+	public Participant getParticipantByID(int id){
+		for(Participant p : participants){
+			if(p.getID() == id){
+				return p;
+			}
+		}
+		return null;
+	}
+		//result functions
+	private void addResult(){
+		int pID = inputNumber("Participants ID:").intValue();
+		String eventName = normalize(inputString("Event name:"),1);
+		boolean incorrectP = true;
+		boolean incorrectE = true;
+		
+		for(Participant p : participants){
+			if(p.getID() == pID){
+				incorrectP = false;
+			}
+		}
+		Event thisEvent = null;
+		int i = 0;
+		for(Event e : eventHandler.getAllEvents()){
+			if(e.getName().equalsIgnoreCase(eventName)){
+				incorrectE = false;
+				thisEvent = e;
+				
+				for(Result r : e.getResults()){
+					if(r.getParticipant().getID() == pID){
+						i++;
+					}
+				}
+			}
+		}
+		
+		
+		if(incorrectP){
+			System.out.println("Error 07: Incorrect participant ID given: "+pID);
+			if(incorrectE){
+				System.out.println("Error 08: Incorrect event name given: "+eventName);
+			}
+		}
+		else if(incorrectE){
+			System.out.println("Error 08: Incorrect event name given");
+		}
+		else{
+			double thisResult;
+			int attempts = 0;
+			do{
+				if(attempts>0){
+					System.out.println("Error 09: Incorrect input, only results >0 accepted");						
+				}					
+				thisResult = inputNumber("Result as decimal number:");
+			}while(thisResult<0);
+			
+			if(thisEvent!=null){
+				if(!incorrectP && !incorrectE && thisEvent.getTries()>=i){
+					Result newResult = new Result(getParticipantByID(pID),eventName,thisResult);
+					eventHandler.getEventByName(eventName).addResult(newResult);
+					System.out.println("Result: "+ newResult+ " has been added");
+				}
+			}
+		}
+	}
+		//team functions
+	private Team makeTeam(String name){//creates a new team if one with that name does not exist, returns true if makes a team
+		if(doesTeamExist(name)){
+			return null;
+		}
+		Team t = new Team(name);
+		teams.add(t);
+		return t;
+	}
+	private boolean doesTeamExist(String name){
+		for(Team team : teams){
+			if(team.getTeamName().equals(name)){
+				return true;
+			}
+		}
+		return false;
+	}
 }
