@@ -14,12 +14,11 @@ import java.util.Scanner;
  */
 public class Competition {
 	private Database db;
+	private EventHandler eventHandler;
 	
-	private ArrayList<Event> events = new ArrayList<Event>();
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	private int nrOfRemoved = 0;
-	private String "blalablal";
 	
 	public static void main(String[] args){
 		Competition thisCompetition = new Competition();
@@ -29,6 +28,7 @@ public class Competition {
 	}
 	private void initialize(Competition c){
 		db = new Database(c);
+		eventHandler = new EventHandler(c);
 	}
 	private void run(){
 		menu();
@@ -41,7 +41,7 @@ public class Competition {
 	}
 	private void saveDb(){
 		if(db.databaseSelected()){
-			db.writeToFile(events, participants,teams);
+			db.writeToFile(eventHandler.getAllEvents(), participants,teams);
 		}
 	}
 	private void loadDb(){
@@ -58,9 +58,9 @@ public class Competition {
 			ArrayList<Event> events = db.getEventsFromDb();
 			if(!events.isEmpty()){
 				for(Event e : events){
-					addEvent(e.getName(),e.getTries(),e.isBiggerBetter());
+					eventHandler.addEvent(e.getName(),e.getTries(),e.isBiggerBetter());
 					for(Result r : e.getResults()){
-						getEventByName(e.getName()).addResult(r);
+						eventHandler.getEventByName(e.getName()).addResult(r);
 					}
 				}
 			}
@@ -77,7 +77,7 @@ public class Competition {
 			loadDb();
 		}
 		else if(userInput.equals("add event")){
-			addEvent();
+			eventHandler.addEvent();
 		}			
 		else if(userInput.equals("add participant")){
 			addParticipant();
@@ -108,7 +108,7 @@ public class Competition {
 		else{				
 			boolean wrongInput = true;
 			System.out.println(userInput);
-			for(Event thisEvent : events){
+			for(Event thisEvent : eventHandler.getAllEvents()){
 				if(thisEvent.getName().equalsIgnoreCase(userInput)){
 					wrongInput = false;
 					resultByEvent(userInput);
@@ -130,76 +130,6 @@ public class Competition {
 		System.out.println("\"list participants\" - lists all participants");
 		System.out.println("\"add result\" - adds a result for a participant, by ID, for a specific event, by name");
 		System.out.println("$eventName - shows the result for given event");
-	}
-	private void addEvent(){
-		String eventName;
-		boolean incorrectName = false;
-		
-		do{
-			eventName = normalize(inputString("Event name:"),1);
-			if(eventName==null){
-				incorrectName = true;
-				System.out.println("Error 01:Names cannot be empty!");
-			}
-		}while(incorrectName);
-		
-		int attempts;
-		boolean tooLowAttempts = false;
-		do{
-			attempts = inputNumber("Attempts allowed:").intValue();
-			if(attempts<1){
-				tooLowAttempts = true;
-				System.out.println("Error 02: Attempts value too low, allowed: 1 or higher");
-			}
-		}while(tooLowAttempts);
-		
-		String biggerBetter;
-		boolean incorrectInput = false;
-		do{
-			biggerBetter = normalize(inputString("Bigger better? (Y/N):"),2);
-			if(!biggerBetter.equals("y") && !biggerBetter.equals("n") && !biggerBetter.equals("yes") && !biggerBetter.equals("no")){
-				incorrectInput = true;
-				System.out.println("Error 03: Incorrect input, allowed sepparated by \",\": y,n,yes,no");
-			}
-		}while(incorrectInput);
-		
-		boolean isBiggerBetter = false;
-		if(biggerBetter.equals("y") || biggerBetter.equals("yes")){
-			isBiggerBetter = true;
-		}
-		
-		Event thisEvent = new Event(eventName,attempts,isBiggerBetter);
-		boolean alreadyExists = false;
-		String eName = thisEvent.getName();
-		
-		for(Event e: events){					
-			if(e.getName().equals(eName)){
-				alreadyExists = true;
-				System.out.println("Error 04:"+eName+" has already been added");
-			}						
-		}
-		if(!alreadyExists){
-			events.add(thisEvent);
-			System.out.println(thisEvent.getName()+" added");
-		}
-	}
-	private void addEvent(String name, int tries, boolean iBB){
-		String eventName = name;
-		int attempts = tries;
-		boolean isBiggerBetter = iBB;
-		
-		Event thisEvent = new Event(eventName,attempts,isBiggerBetter);
-		boolean alreadyExists = false;
-		String eName = thisEvent.getName();
-		
-		for(Event e: events){					
-			if(e.getName().equals(eName)){
-				alreadyExists = true;
-			}						
-		}
-		if(!alreadyExists){
-			events.add(thisEvent);
-		}
 	}
 	private void addParticipant(){
 		String gName = normalize(inputString("Participants given name:"),1);
@@ -272,7 +202,7 @@ public class Competition {
 		}
 		Event thisEvent = null;
 		int i = 0;
-		for(Event e : events){
+		for(Event e : eventHandler.getAllEvents()){
 			if(e.getName().equalsIgnoreCase(eventName)){
 				incorrectE = false;
 				thisEvent = e;
@@ -308,7 +238,7 @@ public class Competition {
 			if(thisEvent!=null){
 				if(!incorrectP && !incorrectE && thisEvent.getTries()>=i){
 					Result newResult = new Result(getParticipantByID(pID),eventName,thisResult);
-					getEventByName(eventName).addResult(newResult);
+					eventHandler.getEventByName(eventName).addResult(newResult);
 					System.out.println("Result: "+ newResult+ " has been added");
 				}
 			}
@@ -342,14 +272,7 @@ public class Competition {
 		}
 		return null;
 	}
-	private Event getEventByName(String eName){
-		for(Event e : events){
-			if(e.getName().equals(eName)){
-				return e;
-			}
-		}
-		return null;
-	}
+	
 	private void message(String s){
 		//make new Message, start after "message "
 		Message message = new Message(s.substring(8));
@@ -359,15 +282,9 @@ public class Competition {
 		//Reset nrOfRemoved, go through all of the ArrayLists and erase everything
 		nrOfRemoved=0;
 		
-		for(int i = 0; i<events.size(); i++){
-			events.remove(i);
-		}		
-		for(int i = 0; i<participants.size(); i++){
-			participants.remove(i);
-		}
-		for(int i = 0; i<teams.size(); i++){
-			teams.remove(i);
-		}
+		eventHandler.reinitialize();
+		participants.clear();
+		teams.clear();
 	}
 	public String inputString(String inputString){
 		@SuppressWarnings("resource")
