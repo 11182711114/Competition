@@ -2,12 +2,9 @@ package competition;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -39,7 +36,7 @@ public class Database {
 				}
 			}
 			writer.close();
-		} catch(Exception E){}
+		} catch(Exception E){System.out.println("Database error");}
 	}
 	public void setDatabase(){
 		file = selectDatabase();
@@ -53,9 +50,7 @@ public class Database {
 	public void listDb(){
 		File[] listOfFiles = folder.listFiles();
 		for(File f : listOfFiles){
-			if(f.isFile()){
-				System.out.println(f.getName());
-			}
+			System.out.println(f.getName());
 		}
 	}
 	public void checkDbFolder(){
@@ -94,7 +89,7 @@ public class Database {
 			}
 			sc.close();
 			return parts;
-		} catch(Exception E){}
+		} catch(Exception E){System.out.println("Database error");}
 		return null;
 	}
 	public ArrayList<Event> getEventsFromDb(){
@@ -129,17 +124,10 @@ public class Database {
 					for(int i = 0; i<resultTags.length;i+=2){
 						switch(resultTags[i]){
 						case "|r|":
-							String s = line.substring(line.indexOf(resultTags[i])+resultTags[i].length(), line.indexOf(resultTags[i+1]));
-							double d = Double.parseDouble(s);
-							tempResult.setResult(d);
-							//tempResult.setResult(Double.parseDouble(line.substring(line.indexOf(tags[i])+3, line.indexOf(tags[i+1]))));
+							tempResult.setResult(Double.parseDouble(line.substring(line.indexOf(resultTags[i])+resultTags[i].length(), line.indexOf(resultTags[i+1]))));
 							break;
 						case "|pID|":
-							int index1 = line.indexOf(resultTags[i])+resultTags[i].length();
-							int index2 = line.indexOf(resultTags[i+1]);
-							String s1 = line.substring(index1, index2);
-							int i1 = Integer.parseInt(s1);
-							tempResult.setParticipant(comp.getParticipantByID(i1));
+							tempResult.setParticipant(comp.getParticipantByID(Integer.parseInt(line.substring(line.indexOf(resultTags[i])+resultTags[i].length(), line.indexOf(resultTags[i+1])))));
 							break;
 						}
 					}
@@ -148,7 +136,7 @@ public class Database {
 			}
 			sc.close();
 			return events;
-		} catch(Exception E){}
+		} catch(Exception E){System.out.println("Database error");}
 		return null;
 	}
 	public boolean databaseExists(){
