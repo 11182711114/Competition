@@ -36,7 +36,7 @@ public class Database {
 				}
 			}
 			writer.close();
-		} catch(Exception E){System.out.println("Database error");}
+		} catch(Exception E){System.out.println("Database error 01");}
 	}
 	public void setDatabase(){
 		file = selectDatabase();
@@ -89,7 +89,7 @@ public class Database {
 			}
 			sc.close();
 			return parts;
-		} catch(Exception E){System.out.println("Database error");}
+		} catch(Exception E){System.out.println("Database error 02");}
 		return null;
 	}
 	public ArrayList<Event> getEventsFromDb(){
@@ -136,7 +136,7 @@ public class Database {
 			}
 			sc.close();
 			return events;
-		} catch(Exception E){System.out.println("Database error");}
+		} catch(Exception E){System.out.println("Database error 03");}
 		return null;
 	}
 	public boolean databaseExists(){
