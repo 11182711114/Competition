@@ -39,13 +39,7 @@ public class Database {
 				}
 			}
 			writer.close();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		} catch(Exception E){}
 	}
 	public void setDatabase(){
 		file = selectDatabase();
@@ -100,9 +94,7 @@ public class Database {
 			}
 			sc.close();
 			return parts;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		} catch(Exception E){}
 		return null;
 	}
 	public ArrayList<Event> getEventsFromDb(){
@@ -156,9 +148,7 @@ public class Database {
 			}
 			sc.close();
 			return events;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		} catch(Exception E){}
 		return null;
 	}
 	public boolean databaseExists(){
