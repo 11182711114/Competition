@@ -45,12 +45,12 @@ public class Database {
 		file = selectDatabase();
 	}
 	public File selectDatabase(){
-		listDB();
+		listDb();
 		//get the path to our folder, ask for file name and append ".db" to it
 		String db = folder.getAbsolutePath() + "/" + comp.inputString("Choose which database to use or make a new one:") + ".db";
 		return new File(db);
 	}
-	public void listDB(){
+	public void listDb(){
 		File[] listOfFiles = folder.listFiles();
 		for(File f : listOfFiles){
 			if(f.isFile()){
