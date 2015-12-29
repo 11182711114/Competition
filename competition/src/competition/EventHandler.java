@@ -86,6 +86,12 @@ public class EventHandler {
 			events.add(thisEvent);
 		}
 	}
+	public boolean doesEventExist(String eName){
+		if(getEventByName(eName)!=null){
+			return true;
+		}
+		return false;
+	}
 	public Event getEventByName(String eName){
 		for(Event e : events){
 			if(e.getName().equalsIgnoreCase(eName)){
