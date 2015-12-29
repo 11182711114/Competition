@@ -49,14 +49,14 @@ public class Result implements Comparable<Result>{
 	@Override
 	public int compareTo(Result r) {
 		double compare = results-r.getResult();
-		if(compare<0){
-			return 1;
+		if(compare>0){
+			return -1;
 		}
 		else if(compare==0){
 			return 0;
 		}
 		else{
-			return -1;
+			return 1;
 		}
 	}	
 }

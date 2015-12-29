@@ -100,6 +100,7 @@ public class Competition {
 			eventHandler.printResultByParticipant();
 		}			
 		else if(userInput.equals("teams")){
+			eventHandler.printMedals();
 		}
 		else if(userInput.contains("message")){
 			message(userInput);
