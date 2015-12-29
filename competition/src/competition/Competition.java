@@ -14,6 +14,7 @@ import java.util.Scanner;
  */
 public class Competition {
 	private static final int MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE = 60;
+	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {' '};
 	
 	private Database db;
 	private EventHandler eventHandler;
@@ -162,7 +163,7 @@ public class Competition {
 		Scanner tangentbord = new Scanner(System.in);
 		System.out.print(outputGuideString);
 		String dOutput = tangentbord.nextLine();
-		if(isNumber(dOutput)){
+		if(isStringNumber(dOutput)){
 			return Double.parseDouble(dOutput);
 		}
 		else{
@@ -170,67 +171,67 @@ public class Competition {
 				System.out.println(dOutput +" is not a number!");
 				System.out.print(outputGuideString);
 				dOutput = tangentbord.nextLine();
-			}while(!isNumber(dOutput));
+			}while(!isStringNumber(dOutput));
 			return Double.parseDouble(dOutput);
 		}
 	}
-	/*
-	 *remove forbidden character, could use .trim() for whitespace only but
-	 *	1. this is more powerful for future additions
-	 *	2. because I didn't check the docs before doing it 
-	 *	3. then got obsessed with making it work and justifiable
-	 *
-	 *it will remove all forbidden characters
-	 *leave whitespace if it has characters next to it, e.g. "Boo FF"
-	 *
-	 *int c;
-	 *0 = do nothing
-	 *1 = force capitalization
-	 *2 = force all lowercase
-	*/
-	public String normalize(String x, int c){
+	public boolean isStringNumber(String s){
+		try{
+			Double.parseDouble(s);
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+	public String normalize(String s, int j){
+		/*
+		 *remove forbidden character, it will;
+		 *remove leading and trailing whitespaces
+		 *remove all forbidden characters
+		 *leave whitespace if it has characters next to it, e.g. "Boo FF"
+		 *
+		 *int c;
+		 *0 = do nothing
+		 *1 = force capitalization
+		 *2 = force all lowercase
+		*/
+		String str = s.trim();
 		String output = null;
-		String[] forbidden = {" "};
-		//iterate through the given string		
-		for(int i=0; i<x.length(); i++){
-			String l = x.substring(i,i+1);
-			//iterate through the forbidden list
-			for(int y = 0; y<forbidden.length;y++){
-				if(!l.equalsIgnoreCase(forbidden[y])){
-					//check if output is null
-					
-					if(output!=null){
-						output=output+l;
+		
+		for(int i = 0; i<str.length();i++){
+			char ch = str.charAt(i);
+			for(char forbiddenChar : NORMALIZE_FORBIDDEN_CHARACTERS){
+				if(!(ch == forbiddenChar)){
+					if(output==null){
+						output=String.valueOf(ch);
 					}
 					else{
-						output=l;						
-						}					
+						output+=String.valueOf(ch);
+					}
 				}
-				//if it is a whitespace check if it has characters next to it
-				if(l.equals(" ")){
-					//check if it's the first or last character, if it is then it is incorrect anyways, if it's not we can check
-					if(i>0 && i<x.length()-1){						
-						if(!x.substring(i-1,i).equals(" ") && !x.substring(i+1,i+2).equals(" ")){
-							output+=l;							
-						}
-					}															
+				else if(ch == ' '){
+					if(!(str.charAt(i+1)==' ')){
+						output+=String.valueOf(ch);
+					}
 				}
 			}
 		}
-		//check if we trimmed the entire string
+		//check if we trimmed the entire thing
 		if(output.isEmpty()){
 			return null;
 		}
 		else{
 			//first letter to uppercase	
-			if(c == 1){
+			if(j == 1){
 				return output.substring(0, 1).toUpperCase()+output.substring(1).toLowerCase();
 			}
-			else if(c == 2){
+			//force lowercase
+			else if(j == 2){
 				return output.toLowerCase();
 			}
+			//return as is
 			return output;			
-		}		
+		}
 	}
 	public ArrayList<Participant> getParticipants(){
 		return participants;
@@ -297,13 +298,5 @@ public class Competition {
 			}
 		}
 		return false;
-	}
-	public boolean isNumber(String s){
-		try{
-			Double.parseDouble(s);
-		}catch(Exception e){
-			return false;
-		}
-		return true;
 	}
 }
