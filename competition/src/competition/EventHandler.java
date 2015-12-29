@@ -25,13 +25,16 @@ public class EventHandler {
 			}
 		}while(incorrectName);
 		
-		int attempts;
+		int attempts = 0;
 		boolean tooLowAttempts = false;
 		do{
-			attempts = comp.inputNumber("Attempts allowed:").intValue();
-			if(attempts<1){
-				tooLowAttempts = true;
-				System.out.println("Error 02: Attempts value too low, allowed: 1 or higher");
+			double attemptsTemp = comp.inputNumber("Attempts allowed:");
+			if(!Double.isNaN(attemptsTemp)){
+				attempts=(int)attemptsTemp;
+				if(attempts<1){
+					tooLowAttempts = true;
+					System.out.println("Error 02: Attempts value too low, allowed: 1 or higher");
+				}
 			}
 		}while(tooLowAttempts);
 		
@@ -176,12 +179,15 @@ public class EventHandler {
 		printResultsWithPlacement(resultToPrint,getBiggerBetterForEventByName(eventName));
 	}
 	public void printResultByParticipant(){
-		int id = comp.inputNumber("Participant ID:").intValue();
-		if(comp.doesParticipantExist(id)){
-			printResults(comp.getParticipantByID(id));
-		}
-		else{
-			System.out.println("No participant with ID " + id);
+		double temp = comp.inputNumber("Participant ID:");
+		if(!Double.isNaN(temp)){
+			int id = (int) temp;
+			if(comp.doesParticipantExist(id)){
+				printResults(comp.getParticipantByID(id));
+			}
+			else{
+				System.out.println("No participant with ID " + id);
+			}
 		}
 	}
 	public void printMedals(){
@@ -366,42 +372,47 @@ public class EventHandler {
 		return output;
 	}
 	public void addResult(){
-		String tempID = ""+comp.inputNumber("Participants ID:");
-		int pID = (int) Double.parseDouble(tempID);
-		Participant p = comp.getParticipantByID(pID);
-		if(p!=null){
-			String eventName = comp.normalize(comp.inputString("Event name:"),1);
-			Event e = getEventByName(eventName);
-			if(e!=null){
-				if(e.checkAllowedMoreAttempts(p)){
-					double thisResultValue;
-					boolean inproperValue = false;
-					do{
-						if(inproperValue){
-							System.out.println("Error 09: Incorrect input, only results >0 accepted");						
-						}					
-						thisResultValue = comp.inputNumber("Result as decimal number:");
-						if(thisResultValue<=0){
-							inproperValue = true;
-						}
-						else{
-							inproperValue = false;
-						}
-					}while(inproperValue);
-					Result r = new Result(p,e,thisResultValue);
-					e.addResult(r);
-					System.out.println(r + " has been added");
+		double tempID = comp.inputNumber("Participants ID:");
+		if(!Double.isNaN(tempID)){
+			int pID = (int) tempID;
+			
+			Participant p = comp.getParticipantByID(pID);
+			if(p!=null){
+				String eventName = comp.normalize(comp.inputString("Event name:"),1);
+				Event e = getEventByName(eventName);
+				if(e!=null){
+					if(e.checkAllowedMoreAttempts(p)){
+						double thisResultValue;
+						boolean inproperValue = false;
+						do{
+							if(inproperValue){
+								System.out.println("Error 09: Incorrect input, only results >0 accepted");						
+							}					
+							thisResultValue = comp.inputNumber("Result as decimal number:");
+							if(!Double.isNaN(thisResultValue)){
+								if(thisResultValue<=0){
+									inproperValue = true;
+								}
+								else{
+									inproperValue = false;
+								}
+							}
+						}while(inproperValue);
+						Result r = new Result(p,e,thisResultValue);
+						e.addResult(r);
+						System.out.println(r + " has been added");
+					}
+					else{
+						System.out.println("Too many attempts!");
+					}
 				}
 				else{
-					System.out.println("Too many attempts!");
+					System.out.println("No such event");
 				}
 			}
 			else{
-				System.out.println("No such event");
+				System.out.println("No such participant: "+pID);
 			}
-		}
-		else{
-			System.out.println("No such participant: "+pID);
 		}
 	}
 	public boolean reinitialize(){

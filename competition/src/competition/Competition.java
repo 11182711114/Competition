@@ -167,12 +167,8 @@ public class Competition {
 			return Double.parseDouble(dOutput);
 		}
 		else{
-			do{
-				System.out.println(dOutput +" is not a number!");
-				System.out.print(outputGuideString);
-				dOutput = tangentbord.nextLine();
-			}while(!isStringNumber(dOutput));
-			return Double.parseDouble(dOutput);
+			System.out.println(dOutput +" is not a number!");
+			return Double.NaN;
 		}
 	}
 	public boolean isStringNumber(String s){
@@ -192,7 +188,7 @@ public class Competition {
 		 *
 		 *int c;
 		 *0 = do nothing
-		 *1 = force capitalization
+		 *1 = force capitalize
 		 *2 = force all lowercase
 		*/
 		String str = s.trim();
@@ -257,24 +253,26 @@ public class Competition {
 			}
 	}
 	private void removeParticipant(){
-		int removedID = inputNumber("Participant ID to be removed:").intValue();
-		
-		int i = 0;				
-		for(Participant p: participants){
-			if(p.getID()==(removedID)){
-				break;
+		double tempRemovedID = inputNumber("Participant ID to be removed:");
+		if(!Double.isNaN(tempRemovedID)){
+			int removedID = (int) tempRemovedID;
+			int i = 0;				
+			for(Participant p: participants){
+				if(p.getID()==(removedID)){
+					break;
+				}
+				i++;
 			}
-			i++;
-		}
-		if(i>=0 && i<participants.size()){
-			System.out.println("Removing: "+ participants.get(i));
-			Participant p = participants.get(i);
-			participants.remove(i);
-			p.getTeam().removeParticipant(p);
-			nrOfRemoved++;
-		}
-		else{
-			System.out.println("Error 06: No participant with ID: "+removedID);										
+			if(i>=0 && i<participants.size()){
+				System.out.println("Removing: "+ participants.get(i));
+				Participant p = participants.get(i);
+				participants.remove(i);
+				p.getTeam().removeParticipant(p);
+				nrOfRemoved++;
+			}
+			else{
+				System.out.println("Error 06: No participant with ID: "+removedID);										
+			}
 		}
 	}
 	private void listParticipants(){
