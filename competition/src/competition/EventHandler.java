@@ -390,7 +390,7 @@ public class EventHandler {
 					}while(inproperValue);
 					Result r = new Result(p,e,thisResultValue);
 					e.addResult(r);
-					System.out.println("Result: "+ r + " has been added");
+					System.out.println(r + " has been added");
 				}
 				else{
 					System.out.println("Too many attempts!");

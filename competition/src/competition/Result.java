@@ -29,7 +29,7 @@ public class Result implements Comparable<Result>{
 	}
 	@Override
 	public String toString(){
-		return "Result:"+results+" Event name:"+" participant ID: "+participant.getID();
+		return "Result:"+results+" Event name: "+ event.getName() +" participant ID: "+participant.getID();
 	}
 	public int getParticipantID(){
 		return participant.getID();
