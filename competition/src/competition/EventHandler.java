@@ -210,7 +210,6 @@ public class EventHandler {
 			str[i][1]=""+temp[1];
 			str[i][2]=""+temp[2];
 		}
-		
 		return str;
 	}
 	private int[] getMedalsByTeam(Team t){
@@ -237,47 +236,23 @@ public class EventHandler {
 		int skipNextNumbers = 0;
 		boolean printNext = false;
 		if(e.getBiggerBetter()){
-//			for(int i = 0;i<results.size();i++){
-//				if(placementIndex>3){
-//					break;
-//				}
-//				if(i<results.size()-1 && skipNextNumbers==0 && results.get(i).getResult()==results.get(i+1).getResult()){
-//					if(results.get(i).getTeam().equals(t)){
-//						medals[placementIndex-1]+=1;
-//						skipNextNumbers++;
-//						printNext = true;
-//					}
-//				}
-//				else if(i<results.size()-1 && results.get(i).getResult()>results.get(i+1).getResult()){
-//					if(results.get(i).getTeam().equals(t)){
-//						medals[placementIndex-1]+=1;
-//					}
-//				}
-//				else if(skipNextNumbers>0){				
-//					placementIndex++;
-//					skipNextNumbers--;
-//					i--;
-//				}	
-//				else if(i<results.size()){
-//					if(results.get(i).getTeam().equals(t)){
-//						medals[placementIndex-1]+=1;
-//					}
-//				}
-//				placementIndex++;
-//			}
 			for(int i = 0; i<results.size();i++){
 				if(placementIndex>3){
 					break;
 				}
 				//if this result is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
 				if(1+i<results.size() && skipNextNumbers==0 && results.get(i).getResult()==results.get(i+1).getResult()){
-					medals[placementIndex-1]+=1;
+					if(results.get(i).getTeam()==t){
+						medals[placementIndex-1]+=1;
+					}
 					skipNextNumbers++;
 					printNext = true;
 				}
 				//if this result and the one before was equal print this with the same index and increase placementIndex
 				else if(printNext){
-					medals[placementIndex-1]+=1;
+					if(results.get(i).getTeam()==t){
+						medals[placementIndex-1]+=1;
+					}
 					printNext = false;
 					placementIndex++;
 				}
@@ -289,64 +264,45 @@ public class EventHandler {
 				}			
 				//if the result is not equal to the next we print it out at placementIndex
 				else{
-					medals[placementIndex-1]+=1;
+					if(results.get(i).getTeam()==t){
+						medals[placementIndex-1]+=1;
+					}
 					placementIndex++;
 				}		
 			}
 		}
 		else{
-//			for(int i = results.size()-1; i>=0; i--){
-//				if(placementIndex>3){
-//					break;
-//				}
-//				if(i>0 && results.get(i).getResult()==results.get(i-1).getResult()){
-//					if(results.get(i).getTeam().equals(t)){
-//						medals[placementIndex-1]+=1;
-//						skipNextNumbers++;
-//					}
-//				}
-//				else if(i>0 && results.get(i).getResult()<results.get(i-1).getResult()){
-//					if(results.get(i).getTeam().equals(t)){
-//						medals[placementIndex-1]+=1;
-//					}
-//				}
-//				else if(skipNextNumbers>0){				
-//					placementIndex++;
-//					skipNextNumbers--;
-//					i++;
-//				}
-//				else if(i>=0){
-//					if(results.get(i).getTeam().equals(t)){
-//						medals[placementIndex-1]+=1;
-//					}
-//				}
-//				placementIndex++;
-//			}
 			for(int i = results.size()-1; i>0;i--){
 				if(placementIndex>3){
 					break;
 				}
 				//if this result is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
 				if(i>0 && skipNextNumbers==0 && results.get(i).getResult()==results.get(i-1).getResult()){
-					medals[placementIndex-1]+=1;
+					if(results.get(i).getTeam()==t){
+						medals[placementIndex-1]+=1;
+					}
 					skipNextNumbers++;
 					printNext = true;
 				}
 				//if this result and the one before was equal print this with the same index and increase placementIndex
 				else if(printNext){
-					medals[placementIndex-1]+=1;
+					if(results.get(i).getTeam()==t){
+						medals[placementIndex-1]+=1;
+					}
 					printNext = false;
 					placementIndex++;
 				}
 				//if skipNextNumber is >0 we increase placementIndex by 1 and decrease skipNextNumbers by 1
-				else if(skipNextNumbers>0){				
+				else if(skipNextNumbers>0){
 					placementIndex++;
 					skipNextNumbers--;
 					i++;
 				}			
 				//if the result is not equal to the next we print it out at placementIndex
 				else{
-					medals[placementIndex-1]+=1;
+					if(results.get(i).getTeam()==t){
+						medals[placementIndex-1]+=1;
+					}
 					placementIndex++;
 				}		
 			}

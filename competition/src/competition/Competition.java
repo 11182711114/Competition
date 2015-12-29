@@ -237,7 +237,7 @@ public class Competition {
 			if(!participants.isEmpty()){
 				ID = 1+participants.get(participants.size()-1).getID();
 			}
-			Participant newParticipant = new Participant(gName,fName,"lol",ID,c);
+			Participant newParticipant = new Participant(gName,fName,tName,ID,c);
 			participants.add(newParticipant);
 			newParticipant.addParticipantToTeam();
 			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");
