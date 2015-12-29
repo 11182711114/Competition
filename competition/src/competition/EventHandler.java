@@ -367,46 +367,41 @@ public class EventHandler {
 	}
 	public void addResult(){
 		String tempID = ""+comp.inputNumber("Participants ID:");
-		if(comp.isNumber(tempID)){
-			int pID = (int) Double.parseDouble(tempID);
-			Participant p = comp.getParticipantByID(pID);
-			if(p!=null){
-				String eventName = comp.normalize(comp.inputString("Event name:"),1);
-				Event e = getEventByName(eventName);
-				if(e!=null){
-					if(e.checkAllowedMoreAttempts(p)){
-						double thisResultValue;
-						boolean inproperValue = false;
-						do{
-							if(inproperValue){
-								System.out.println("Error 09: Incorrect input, only results >0 accepted");						
-							}					
-							thisResultValue = comp.inputNumber("Result as decimal number:");
-							if(thisResultValue<=0){
-								inproperValue = true;
-							}
-							else{
-								inproperValue = false;
-							}
-						}while(inproperValue);
-						Result r = new Result(p,e,thisResultValue);
-						e.addResult(r);
-						System.out.println("Result: "+ r + " has been added");
-					}
-					else{
-						System.out.println("Too many attempts!");
-					}
+		int pID = (int) Double.parseDouble(tempID);
+		Participant p = comp.getParticipantByID(pID);
+		if(p!=null){
+			String eventName = comp.normalize(comp.inputString("Event name:"),1);
+			Event e = getEventByName(eventName);
+			if(e!=null){
+				if(e.checkAllowedMoreAttempts(p)){
+					double thisResultValue;
+					boolean inproperValue = false;
+					do{
+						if(inproperValue){
+							System.out.println("Error 09: Incorrect input, only results >0 accepted");						
+						}					
+						thisResultValue = comp.inputNumber("Result as decimal number:");
+						if(thisResultValue<=0){
+							inproperValue = true;
+						}
+						else{
+							inproperValue = false;
+						}
+					}while(inproperValue);
+					Result r = new Result(p,e,thisResultValue);
+					e.addResult(r);
+					System.out.println("Result: "+ r + " has been added");
 				}
 				else{
-					System.out.println("No such event");
+					System.out.println("Too many attempts!");
 				}
 			}
 			else{
-				System.out.println("No such participant: "+pID);
+				System.out.println("No such event");
 			}
 		}
 		else{
-			System.out.println(tempID + " is not a number!");
+			System.out.println("No such participant: "+pID);
 		}
 	}
 	public boolean reinitialize(){
