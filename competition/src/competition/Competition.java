@@ -151,19 +151,28 @@ public class Competition {
 		message.printInBoxOfStars(MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE);
 	}
 			//public functions
-	public String inputString(String inputString){
+	public String inputString(String outputGuideString){
 		@SuppressWarnings("resource")
 		Scanner tangentbord = new Scanner(System.in);
-		System.out.print(inputString);
+		System.out.print(outputGuideString);
 		return tangentbord.nextLine();		
 	}
-	public Double inputNumber(String inputNumber){		
+	public Double inputNumber(String outputGuideString){		
 		@SuppressWarnings("resource")
 		Scanner tangentbord = new Scanner(System.in);
-		System.out.print(inputNumber);
-		Double dOutput = tangentbord.nextDouble();
-		tangentbord.nextLine();
-		return dOutput;
+		System.out.print(outputGuideString);
+		String dOutput = tangentbord.nextLine();
+		if(isNumber(dOutput)){
+			return Double.parseDouble(dOutput);
+		}
+		else{
+			do{
+				System.out.println(dOutput +" is not a number!");
+				System.out.print(outputGuideString);
+				dOutput = tangentbord.nextLine();
+			}while(!isNumber(dOutput));
+			return Double.parseDouble(dOutput);
+		}
 	}
 	/*
 	 *remove forbidden character, could use .trim() for whitespace only but
@@ -288,5 +297,13 @@ public class Competition {
 			}
 		}
 		return false;
+	}
+	public boolean isNumber(String s){
+		try{
+			Double.parseDouble(s);
+		}catch(Exception e){
+			return false;
+		}
+		return true;
 	}
 }
