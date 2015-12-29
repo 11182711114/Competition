@@ -38,6 +38,21 @@ public class Event {
 	public ArrayList<Result> getResults(){
 		return results;
 	}
+	public boolean checkAllowedMoreAttempts(Participant p){
+		if(checkNumberAttempts(p)<attempts){
+			return true;
+		}
+		return false;		
+	}
+	public int checkNumberAttempts(Participant p){
+		int numberAttempts = 0;
+		for(Result r : results){
+			if(r.getParticipant()==p){
+				numberAttempts++;
+			}
+		}
+		return numberAttempts;
+	}
 	public String toDb(){
 		return "|e|"+eventName+"|/e|" + "|a|"+attempts+"|/a|" + "|b|"+biggerBetter+"|/b|";
 	}

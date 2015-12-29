@@ -366,40 +366,47 @@ public class EventHandler {
 		return output;
 	}
 	public void addResult(){
-		int pID = comp.inputNumber("Participants ID:").intValue();
-		boolean incorrectP = true;
-		
-		for(Participant p : comp.getParticipants()){
-			if(p.getID() == pID){
-				incorrectP = false;
-			}
-		}
-		if(incorrectP){
-			System.out.println("Error 07: Incorrect participant ID given: "+pID);
-		}
-		String eventName = comp.normalize(comp.inputString("Event name:"),1);
-		Event thisEvent = getEventByName(eventName);
-		int i = 0;
-		if(thisEvent==null){
-			System.out.println("Error 08: Incorrect event name given");
-		}
-		else if(thisEvent!=null && !incorrectP){
-			double thisResult;
-			int attempts = 0;
-			do{
-				if(attempts>0){
-					System.out.println("Error 09: Incorrect input, only results >0 accepted");						
-				}					
-				thisResult = comp.inputNumber("Result as decimal number:");
-			}while(thisResult<0);
-			
-			if(thisEvent!=null){
-				if(!incorrectP && thisEvent!=null && thisEvent.getTries()>=i){
-					Result newResult = new Result(comp.getParticipantByID(pID),thisEvent,thisResult);
-					getEventByName(eventName).addResult(newResult);
-					System.out.println("Result: "+ newResult+ " has been added");
+		String tempID = ""+comp.inputNumber("Participants ID:");
+		if(comp.isNumber(tempID)){
+			int pID = (int) Double.parseDouble(tempID);
+			Participant p = comp.getParticipantByID(pID);
+			if(p!=null){
+				String eventName = comp.normalize(comp.inputString("Event name:"),1);
+				Event e = getEventByName(eventName);
+				if(e!=null){
+					if(e.checkAllowedMoreAttempts(p)){
+						double thisResultValue;
+						boolean inproperValue = false;
+						do{
+							if(inproperValue){
+								System.out.println("Error 09: Incorrect input, only results >0 accepted");						
+							}					
+							thisResultValue = comp.inputNumber("Result as decimal number:");
+							if(thisResultValue<=0){
+								inproperValue = true;
+							}
+							else{
+								inproperValue = false;
+							}
+						}while(inproperValue);
+						Result r = new Result(p,e,thisResultValue);
+						e.addResult(r);
+						System.out.println("Result: "+ r + " has been added");
+					}
+					else{
+						System.out.println("Too many attempts!");
+					}
+				}
+				else{
+					System.out.println("No such event");
 				}
 			}
+			else{
+				System.out.println("No such participant: "+pID);
+			}
+		}
+		else{
+			System.out.println(tempID + " is not a number!");
 		}
 	}
 	public boolean reinitialize(){
