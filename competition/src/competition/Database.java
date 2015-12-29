@@ -44,8 +44,14 @@ public class Database {
 	public File selectDatabase(){
 		listDb();
 		//get the path to our folder, ask for file name and append ".db" to it
-		String db = folder.getAbsolutePath() + "/" + comp.inputString("Choose which database to use or make a new one:") + ".db";
-		return new File(db);
+		String dbName;
+		do{
+			dbName = comp.inputString("Choose which database to use or make a new one:");
+			if(!dbName.equals("")){ //lets not allow "" as a name
+				break;
+			}
+		}while(true);
+		return new File(folder.getAbsolutePath() + "/" + dbName + ".db");
 	}
 	public void listDb(){
 		File[] listOfFiles = folder.listFiles();
