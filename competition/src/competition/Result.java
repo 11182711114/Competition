@@ -24,6 +24,9 @@ public class Result implements Comparable<Result>{
 	public void setParticipant(Participant p){
 		participant = p;
 	}
+	public void setEvent(Event e){
+		event = e;
+	}
 	@Override
 	public String toString(){
 		return "Result:"+results+" Event name:"+" participant ID: "+participant.getID();
@@ -36,6 +39,9 @@ public class Result implements Comparable<Result>{
 	}
 	public String getTeamName(){
 		return participant.getTeamName();
+	}
+	public Team getTeam(){
+		return participant.getTeam();
 	}
 	public String getEventName(){
 		return event.getName();

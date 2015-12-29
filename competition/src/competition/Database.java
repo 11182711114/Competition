@@ -130,6 +130,7 @@ public class Database {
 							tempResult.setParticipant(comp.getParticipantByID(Integer.parseInt(line.substring(line.indexOf(resultTags[i])+resultTags[i].length(), line.indexOf(resultTags[i+1])))));
 							break;
 						}
+						tempResult.setEvent(events.get(events.size()-1));
 					}
 					events.get(events.size()-1).addResult(tempResult);
 				}
