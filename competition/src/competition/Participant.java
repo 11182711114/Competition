@@ -1,13 +1,10 @@
 package competition;
 
-import java.util.ArrayList;
-
 public class Participant {
 	private String givenName;
 	private String familyName;
 	private Team team;
 	private int id;
-	private ArrayList<Result> results = new ArrayList<Result>();
 	
 	public Participant(String gName, String fName, String tName, int tempID, Competition c){
 		givenName = gName;
@@ -33,6 +30,9 @@ public class Participant {
 	public String getFamilyName(){
 		return familyName;
 	}
+	public String getFullName(){
+		return givenName + " " + familyName;
+	}
 	public int getID(){
 		return id;		
 	}
@@ -45,15 +45,15 @@ public class Participant {
 	public String getTeamName(){
 		return team.getName();
 	}
-	public boolean addResult(Result r){
-		if(results.contains(r)){
-			return false;
-		}
-		else{
-			results.add(r);
-			return true;
-		}
-	}
+//	public boolean addResult(Result r){
+//		if(results.contains(r)){
+//			return false;
+//		}
+//		else{
+//			results.add(r);
+//			return true;
+//		}
+//	}
 	private Team makeTeam(String name,Competition comp){//creates a new team if one with that name does not exist, returns true if makes a team
 		Team t = doesTeamExist(name, comp);
 		if(t==null){

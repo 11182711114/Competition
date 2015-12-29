@@ -3,10 +3,12 @@ package competition;
 public class Result implements Comparable<Result>{
 	private double results;
 	private Participant participant;
+	private Event event;
 	
-	public Result(Participant inputParticipant, String eName, double result){
+	public Result(Participant inputParticipant, Event e, double result){
 		results = result;
 		participant = inputParticipant;
+		event = e;
 	}
 	
 	
@@ -34,6 +36,9 @@ public class Result implements Comparable<Result>{
 	}
 	public String getTeamName(){
 		return participant.getTeamName();
+	}
+	public String getEventName(){
+		return event.getName();
 	}
 	/*public int compare(Result a, Result b){
 		double compare = a.getResult()-b.getResult();

@@ -91,7 +91,7 @@ public class EventHandler {
 		}
 		return null;
 	}
-	public void printResults(ArrayList<Result> results){
+	public void printResultsWithPlacement(ArrayList<Result> results){
 		ArrayList<Result> sortedResults = sortResults(results);
 		
 		int placementIndex = 1;
@@ -125,26 +125,21 @@ public class EventHandler {
 				}		
 			}
 	}
+	public void printResults(Participant p){
+		for(Event e : events){
+			System.out.print("Results for "+ p.getFullName() +" in "+ e.getName() +": ");
+			double[] results = getFormattedResultForParticipantForEvent(p,e);
+			for(int i = 0; i<results.length;i++){
+				if(i+1>=results.length){
+					System.out.println(results[i]);
+				}
+				else{
+					System.out.print(results[i]+", ");
+				}
+			}
+		}
+	}
 	private ArrayList<Result> sortResults(ArrayList<Result> results){
-//		ArrayList<Result> sortedResults = new ArrayList<>();
-//		
-//		boolean swapped = false;
-//		do{
-//			swapped = false;
-//			for(int i = 1; i<results.size(); i++){				
-//				if(biggerBetter && results.get(i).getResult()>results.get(i-1).getResult()){
-//					Result tempResult = results.get(i);
-//					sortedResults.add(i-1,tempResult);
-//					swapped = true;
-//				}
-//				else if(!biggerBetter && results.get(i).getResult()<results.get(i-1).getResult()){
-//					Result tempResult = results.get(i);
-//					sortedResults.add(i-1,tempResult);
-//					swapped = true;
-//				}
-//			}
-//		}while(swapped);
-//		return sortedResults;
 		ArrayList<Result> sortedResults = results;
 		Collections.sort(results);
 		return sortedResults;
@@ -186,6 +181,20 @@ public class EventHandler {
 			}
 		}
 		return unsortedBestResults;
+	}
+	private double[] getFormattedResultForParticipantForEvent(Participant p, Event e){
+		ArrayList<Result> results = new ArrayList<>();
+		ArrayList<Result> tempResults = e.getResults();
+		for(Result r : tempResults){
+			if(r.getParticipant()==p){
+				results.add(r);
+			}
+		}
+		double[] output = new double[results.size()];
+		for(int i = 0; i<results.size();i++){
+			output[i]=results.get(i).getResult();
+		}
+		return output;
 	}
 	public boolean reinitialize(){
 		events.clear();

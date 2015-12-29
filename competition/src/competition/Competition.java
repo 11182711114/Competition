@@ -97,7 +97,7 @@ public class Competition {
 			addResult();								
 		}
 		else if(userInput.equals("participant")){
-			//printParticipantResultsByEvent();
+			printResultByParticipant();
 		}			
 		else if(userInput.equals("teams")){				
 		}
@@ -152,7 +152,16 @@ public class Competition {
 	private void printResultByEvent(String eventName){
 		ArrayList<Result> resultToPrint = eventHandler.eventUniqueResults(eventName);
 		System.out.println("Results for " + normalize(eventName,1));
-		eventHandler.printResults(resultToPrint);
+		eventHandler.printResultsWithPlacement(resultToPrint);
+	}
+	private void printResultByParticipant(){
+		int id = inputNumber("Participant ID:").intValue();
+		if(doesParticipantExist(id)){
+			eventHandler.printResults(getParticipantByID(id));
+		}
+		else{
+			System.out.println("No participant with ID " + id);
+		}
 	}
 			//public functions
 	public String inputString(String inputString){
@@ -284,6 +293,14 @@ public class Competition {
 		}
 		return null;
 	}
+	private boolean doesParticipantExist(int id){
+		for(Participant p : participants){
+			if(p.getID() == id){
+				return true;
+			}
+		}
+		return false;
+	}
 		//result functions
 	private void addResult(){
 		int pID = inputNumber("Participants ID:").intValue();
@@ -333,7 +350,7 @@ public class Competition {
 			
 			if(thisEvent!=null){
 				if(!incorrectP && !incorrectE && thisEvent.getTries()>=i){
-					Result newResult = new Result(getParticipantByID(pID),eventName,thisResult);
+					Result newResult = new Result(getParticipantByID(pID),thisEvent,thisResult);
 					eventHandler.getEventByName(eventName).addResult(newResult);
 					System.out.println("Result: "+ newResult+ " has been added");
 				}
