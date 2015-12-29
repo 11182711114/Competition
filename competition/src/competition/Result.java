@@ -40,31 +40,17 @@ public class Result implements Comparable<Result>{
 	public String getEventName(){
 		return event.getName();
 	}
-	/*public int compare(Result a, Result b){
-		double compare = a.getResult()-b.getResult();
-		if(compare<0){
-			return -1;
-		}
-		else if(compare==0){
-			return 0;
-		}
-		else{
-			return 1;
-		}
-	}*/
-
-
 	@Override
 	public int compareTo(Result r) {
 		double compare = results-r.getResult();
 		if(compare<0){
-			return -1;
+			return 1;
 		}
 		else if(compare==0){
 			return 0;
 		}
 		else{
-			return 1;
+			return -1;
 		}
 	}	
 }

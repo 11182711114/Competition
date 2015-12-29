@@ -20,7 +20,7 @@ public class Event {
 	public int getTries(){
 		return attempts;		
 	}
-	public boolean isBiggerBetter(){
+	public boolean getBiggerBetter(){
 		return biggerBetter;
 	}
 	public void setName(String s){

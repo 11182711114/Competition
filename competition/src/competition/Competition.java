@@ -62,7 +62,7 @@ public class Competition {
 			ArrayList<Event> events = db.getEventsFromDb();
 			if(!events.isEmpty()){
 				for(Event e : events){
-					eventHandler.addEvent(e.getName(),e.getTries(),e.isBiggerBetter());
+					eventHandler.addEvent(e.getName(),e.getTries(),e.getBiggerBetter());
 					for(Result r : e.getResults()){
 						eventHandler.getEventByName(e.getName()).addResult(r);
 					}
@@ -94,12 +94,12 @@ public class Competition {
 			listParticipants();
 		}
 		else if(userInput.equals("add result")){
-			addResult();								
+			eventHandler.addResult();								
 		}
 		else if(userInput.equals("participant")){
-			printResultByParticipant();
+			eventHandler.printResultByParticipant();
 		}			
-		else if(userInput.equals("teams")){				
+		else if(userInput.equals("teams")){
 		}
 		else if(userInput.contains("message")){
 			message(userInput);
@@ -115,7 +115,7 @@ public class Competition {
 			for(Event thisEvent : eventHandler.getAllEvents()){
 				if(thisEvent.getName().equalsIgnoreCase(userInput)){
 					wrongInput = false;
-					printResultByEvent(userInput);
+					eventHandler.printResultByEvent(userInput);
 				}										
 			}
 			if(wrongInput){
@@ -148,20 +148,6 @@ public class Competition {
 		//make new Message, start after "message "
 		Message message = new Message(s.substring(8));
 		message.printInBoxOfStars(MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE);
-	}
-	private void printResultByEvent(String eventName){
-		ArrayList<Result> resultToPrint = eventHandler.eventUniqueResults(eventName);
-		System.out.println("Results for " + normalize(eventName,1));
-		eventHandler.printResultsWithPlacement(resultToPrint);
-	}
-	private void printResultByParticipant(){
-		int id = inputNumber("Participant ID:").intValue();
-		if(doesParticipantExist(id)){
-			eventHandler.printResults(getParticipantByID(id));
-		}
-		else{
-			System.out.println("No participant with ID " + id);
-		}
 	}
 			//public functions
 	public String inputString(String inputString){
@@ -285,6 +271,7 @@ public class Competition {
 			System.out.println(p.toString());
 		}
 	}
+			//public functions
 	public Participant getParticipantByID(int id){
 		for(Participant p : participants){
 			if(p.getID() == id){
@@ -293,7 +280,7 @@ public class Competition {
 		}
 		return null;
 	}
-	private boolean doesParticipantExist(int id){
+	public boolean doesParticipantExist(int id){
 		for(Participant p : participants){
 			if(p.getID() == id){
 				return true;
@@ -301,60 +288,4 @@ public class Competition {
 		}
 		return false;
 	}
-		//result functions
-	private void addResult(){
-		int pID = inputNumber("Participants ID:").intValue();
-		String eventName = normalize(inputString("Event name:"),1);
-		boolean incorrectP = true;
-		boolean incorrectE = true;
-		
-		for(Participant p : participants){
-			if(p.getID() == pID){
-				incorrectP = false;
-			}
-		}
-		Event thisEvent = null;
-		int i = 0;
-		for(Event e : eventHandler.getAllEvents()){
-			if(e.getName().equalsIgnoreCase(eventName)){
-				incorrectE = false;
-				thisEvent = e;
-				
-				for(Result r : e.getResults()){
-					if(r.getParticipant().getID() == pID){
-						i++;
-					}
-				}
-			}
-		}
-		
-		
-		if(incorrectP){
-			System.out.println("Error 07: Incorrect participant ID given: "+pID);
-			if(incorrectE){
-				System.out.println("Error 08: Incorrect event name given: "+eventName);
-			}
-		}
-		else if(incorrectE){
-			System.out.println("Error 08: Incorrect event name given");
-		}
-		else{
-			double thisResult;
-			int attempts = 0;
-			do{
-				if(attempts>0){
-					System.out.println("Error 09: Incorrect input, only results >0 accepted");						
-				}					
-				thisResult = inputNumber("Result as decimal number:");
-			}while(thisResult<0);
-			
-			if(thisEvent!=null){
-				if(!incorrectP && !incorrectE && thisEvent.getTries()>=i){
-					Result newResult = new Result(getParticipantByID(pID),thisEvent,thisResult);
-					eventHandler.getEventByName(eventName).addResult(newResult);
-					System.out.println("Result: "+ newResult+ " has been added");
-				}
-			}
-		}
-	}	
 }
