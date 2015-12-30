@@ -206,10 +206,10 @@ public class Competition {
 				if(ch == forbiddenChar){
 					forbidden = true;
 				}
-				else if(ch == ' '){
-					if(str.charAt(i+1)==' '){
-						forbidden = true;
-					}
+			}
+			if(ch == ' '){
+				if(str.charAt(i+1)==' '){
+					forbidden = true;
 				}
 			}
 			if(!forbidden){
