@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Database {
-	private File folder = new File(new File(".").getAbsolutePath()+"/db");
+	private static final File ABSOLUTE_DB_FOLDER_PATH = new File(new File(".").getAbsolutePath()+"/db");
+	
 	private File file;
 	private Competition comp;
 	
@@ -51,17 +52,17 @@ public class Database {
 				break;
 			}
 		}while(true);
-		return new File(folder.getAbsolutePath() + "/" + dbName + ".db");
+		return new File(ABSOLUTE_DB_FOLDER_PATH + "/" + dbName + ".db");
 	}
 	public void listDb(){
-		File[] listOfFiles = folder.listFiles();
+		File[] listOfFiles = ABSOLUTE_DB_FOLDER_PATH.listFiles();
 		for(File f : listOfFiles){
 			System.out.println(f.getName());
 		}
 	}
 	public void checkDbFolder(){
-		if(!folder.exists() && !folder.isDirectory()){
-			folder.mkdir();
+		if(!ABSOLUTE_DB_FOLDER_PATH.exists() && !ABSOLUTE_DB_FOLDER_PATH.isDirectory()){
+			ABSOLUTE_DB_FOLDER_PATH.mkdir();
 		}
 	}
 	public ArrayList<Participant> getParticipantsFromDb(){
