@@ -5,8 +5,7 @@ import java.util.Scanner;
 /*
  * TODO;
  * 	high priority
- * 		team()
- * 		participant()
+ * 		sort teams output
  * 	med priority
  * 		clean code
  * 	low priority
@@ -262,7 +261,8 @@ public class Competition {
 		double tempRemovedID = inputNumber("Participant ID to be removed:");
 		if(!Double.isNaN(tempRemovedID)){
 			int removedID = (int) tempRemovedID;
-			Participant p = getParticipantByID(removedID);	
+			Participant p = getParticipantByID(removedID);
+			eventHandler.removeResultsByParticipant(p);
 			if(participants.remove(p)){
 				System.out.println(p + " had been removed");
 			}

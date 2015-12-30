@@ -421,6 +421,14 @@ public class EventHandler {
 			}
 		}
 	}
+	public boolean removeResultsByParticipant(Participant p){
+		for(Event e : events){
+			if(!(e.removeResultsByParticipant(p).isEmpty())){
+				return true;
+			}
+		}
+		return false;
+	}
 	public boolean reinitialize(){
 		events.clear();
 		if(events.isEmpty()){

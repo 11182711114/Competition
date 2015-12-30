@@ -53,6 +53,18 @@ public class Event {
 		}
 		return numberAttempts;
 	}
+	public ArrayList<Result> removeResultsByParticipant(Participant p){
+		ArrayList<Result> outResults = new ArrayList<>();
+		for(Result r : results){
+			if(r.getParticipant()==p){
+				outResults.add(r);
+			}
+		}
+		if(results.removeAll(outResults)){
+			return outResults;
+		}
+		return null;
+	}
 	public String toDb(){
 		return "|e|"+eventName+"|/e|" + "|a|"+attempts+"|/a|" + "|b|"+biggerBetter+"|/b|";
 	}
