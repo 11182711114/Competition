@@ -247,6 +247,9 @@ public class Competition {
 		String tName = normalize(inputString("Participants team name:"),1);
 		
 		if(gName != null && fName != null && tName != null){
+			while(getParticipantByID(participantID)!=null){
+				participantID++;
+			}
 			Participant newParticipant = new Participant(gName,fName,tName,participantID,this);
 			participants.add(newParticipant);
 			newParticipant.addParticipantToTeam();
