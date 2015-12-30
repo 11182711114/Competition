@@ -262,22 +262,12 @@ public class Competition {
 		double tempRemovedID = inputNumber("Participant ID to be removed:");
 		if(!Double.isNaN(tempRemovedID)){
 			int removedID = (int) tempRemovedID;
-			int i = 0;				
-			for(Participant p: participants){
-				if(p.getID()==(removedID)){
-					break;
-				}
-				i++;
-			}
-			if(i>=0 && i<participants.size()){
-				System.out.println("Removing: "+ participants.get(i));
-				Participant p = participants.get(i);
-				participants.remove(i);
-				p.getTeam().removeParticipant(p);
-				participantID++;
+			Participant p = getParticipantByID(removedID);	
+			if(participants.remove(p)){
+				System.out.println(p + " had been removed");
 			}
 			else{
-				System.out.println("Error 06: No participant with ID: "+removedID);										
+				System.out.println("No participant with ID: " + removedID);
 			}
 		}
 	}
