@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class Competition {
 	private static final int MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE = 60;
-	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {' '};
+	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {};
 	
 	private Database db;
 	private EventHandler eventHandler;
@@ -79,6 +79,7 @@ public class Competition {
 		return normalize(inputString("Listening:"),2);
 	}
 	private boolean handleCommands(String userInput){
+		System.out.println(userInput);
 		if(userInput.equals("load")){
 			loadDb();
 		}
@@ -199,20 +200,24 @@ public class Competition {
 		String output = null;
 		
 		for(int i = 0; i<str.length();i++){
+			boolean forbidden = false;
 			char ch = str.charAt(i);
 			for(char forbiddenChar : NORMALIZE_FORBIDDEN_CHARACTERS){
-				if(!(ch == forbiddenChar)){
-					if(output==null){
-						output=String.valueOf(ch);
-					}
-					else{
-						output+=String.valueOf(ch);
-					}
+				if(ch == forbiddenChar){
+					forbidden = true;
 				}
 				else if(ch == ' '){
-					if(!(str.charAt(i+1)==' ')){
-						output+=String.valueOf(ch);
+					if(str.charAt(i+1)==' '){
+						forbidden = true;
 					}
+				}
+			}
+			if(!forbidden){
+				if(output==null){
+					output=String.valueOf(ch);
+				}
+				else{
+					output+=String.valueOf(ch);
 				}
 			}
 		}
