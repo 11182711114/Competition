@@ -20,7 +20,7 @@ public class Competition {
 	private EventHandler eventHandler;
 	
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
-	private int nrOfRemoved = 0;
+	private int participantID = 100;
 	
 	
 	public static void main(String[] args){
@@ -90,7 +90,7 @@ public class Competition {
 			eventHandler.addEvent();
 		}			
 		else if(userInput.equals("add participant")){
-			addParticipant(this);
+			addParticipant();
 		}
 		else if(userInput.equals("remove participant")){
 			removeParticipant();
@@ -146,7 +146,7 @@ public class Competition {
 		//basic functions
 	private void reinitialize(){
 		//Reset nrOfRemoved, go through all of the ArrayLists and erase everything
-		nrOfRemoved=0;
+		participantID=100;
 		
 		eventHandler.reinitialize();
 		participants.clear();
@@ -242,20 +242,17 @@ public class Competition {
 		return participants;
 	}
 		//participant functions
-	private void addParticipant(Competition c){
+	private void addParticipant(){
 		String gName = normalize(inputString("Participants given name:"),1);
 		String fName = normalize(inputString("Participants family name:"),1);
 		String tName = normalize(inputString("Participants team name:"),1);
 		
 		if(gName != null && fName != null && tName != null){
-			int ID = 100;		
-			if(!participants.isEmpty()){
-				ID = 1+participants.get(participants.size()-1).getID();
-			}
-			Participant newParticipant = new Participant(gName,fName,tName,ID,c);
+			Participant newParticipant = new Participant(gName,fName,tName,participantID,this);
 			participants.add(newParticipant);
 			newParticipant.addParticipantToTeam();
-			System.out.println(participants.get(ID-100-nrOfRemoved)+" added");
+			System.out.println(newParticipant+" added");
+			participantID++;
 		}
 		else{
 			System.out.println("Error 05; null value in add participant");
@@ -277,7 +274,7 @@ public class Competition {
 				Participant p = participants.get(i);
 				participants.remove(i);
 				p.getTeam().removeParticipant(p);
-				nrOfRemoved++;
+				participantID++;
 			}
 			else{
 				System.out.println("Error 06: No participant with ID: "+removedID);										
