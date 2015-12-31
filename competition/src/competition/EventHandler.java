@@ -1,6 +1,7 @@
 package competition;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -16,57 +17,51 @@ public class EventHandler {
 	}
 	public void addEvent(){
 		String eventName;
-		boolean incorrectName = false;
+		int attempts = 0;
+		boolean isBiggerBetter = false;
 		
 		do{
 			eventName = comp.normalize(comp.inputString("Event name:"),1);
 			if(eventName==null){
-				incorrectName = true;
-				System.out.println("Error 01:Names cannot be empty!");
+				System.out.println("Names cannot be empty");
 			}
-		}while(incorrectName);
+		}while(eventName==null);
 		
-		int attempts = 0;
-		boolean tooLowAttempts = false;
-		do{
-			double attemptsTemp = comp.inputNumber("Attempts allowed:");
-			if(!Double.isNaN(attemptsTemp)){
-				attempts=(int)attemptsTemp;
-				if(attempts<1){
-					tooLowAttempts = true;
-					System.out.println("Error 02: Attempts value too low, allowed: 1 or higher");
+		if(doesEventExist(eventName)){
+			System.out.println(eventName + " already exists");
+		}
+		else{
+			boolean tooLowAttempts = false;
+			do{
+				double attemptsTemp = comp.inputNumber("Attempts allowed:");
+				if(!Double.isNaN(attemptsTemp)){
+					attempts = (int) attemptsTemp;
+					if(attempts<1){
+						tooLowAttempts = true;
+						System.out.println("Error 02: Attempts value too low, allowed: 1 or higher");
+					}
 				}
+			}while(tooLowAttempts);
+			
+			String biggerBetter;
+			boolean incorrectInput = false;
+			do{
+				biggerBetter = comp.normalize(comp.inputString("Bigger better? (Y/N):"),2);
+				if(!biggerBetter.equals("y") && !biggerBetter.equals("n") && !biggerBetter.equals("yes") && !biggerBetter.equals("no")){
+					incorrectInput = true;
+					System.out.println("Error 03: Incorrect input, allowed sepparated by \",\": y,n,yes,no");
+				}
+			}while(incorrectInput);
+			
+			if(biggerBetter.equals("y") || biggerBetter.equals("yes")){
+				isBiggerBetter = true;
 			}
-		}while(tooLowAttempts);
-		
-		String biggerBetter;
-		boolean incorrectInput = false;
-		do{
-			biggerBetter = comp.normalize(comp.inputString("Bigger better? (Y/N):"),2);
-			if(!biggerBetter.equals("y") && !biggerBetter.equals("n") && !biggerBetter.equals("yes") && !biggerBetter.equals("no")){
-				incorrectInput = true;
-				System.out.println("Error 03: Incorrect input, allowed sepparated by \",\": y,n,yes,no");
+			
+			if(attempts!=0){
+				Event thisEvent = new Event(eventName,attempts,isBiggerBetter);
+				events.add(thisEvent);
+				System.out.println(thisEvent.getName()+" added");
 			}
-		}while(incorrectInput);
-		
-		boolean isBiggerBetter = false;
-		if(biggerBetter.equals("y") || biggerBetter.equals("yes")){
-			isBiggerBetter = true;
-		}
-		
-		Event thisEvent = new Event(eventName,attempts,isBiggerBetter);
-		boolean alreadyExists = false;
-		String eName = thisEvent.getName();
-		
-		for(Event e: events){					
-			if(e.getName().equals(eName)){
-				alreadyExists = true;
-				System.out.println("Error 04:"+eName+" has already been added");
-			}						
-		}
-		if(!alreadyExists){
-			events.add(thisEvent);
-			System.out.println(thisEvent.getName()+" added");
 		}
 	}
 	public void addEvent(String name, int tries, boolean iBB){
@@ -274,12 +269,22 @@ public class EventHandler {
 						else if(a3[2]<0){
 							return 1;
 						}
+						else{
+							if(o1[3].compareToIgnoreCase(o2[3])==1){
+								return 1;
+							}
+							if(o1[3].compareToIgnoreCase(o2[3])==-1){
+								return -1;
+							}
+							else{
+								return 0;
+							}
+						}
 					}
 				}
-				return 0;
 			}
 		};
-		java.util.Arrays.sort(medals, compare);
+		Arrays.sort(medals, compare);
 		return medals;
 	}
 	private int[] subtractArray(int[] a1,int[] a2){
