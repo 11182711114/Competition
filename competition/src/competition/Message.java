@@ -1,21 +1,20 @@
 package competition;
 
 public class Message {
-	
-	
 	private String message;
 	
 	public Message(String messageIn){
 		message = messageIn;
 	}
 	public void printInBoxOfStars(int numberOfStars){
+		int absoluteNumberOfStars = numberOfStars+4;//add 4 so we dont go into an infinite loop
 		int charsWritten = 0;
-		printLineOfStars(numberOfStars);
-		printEmptyLineWithStarsOnSides(numberOfStars);
+		printLineOfStars(absoluteNumberOfStars);
+		printEmptyLineWithStarsOnSides(absoluteNumberOfStars);
 		
 		while(charsWritten<message.length()){
 			System.out.print("* ");
-			for(int i = 0; i<numberOfStars-4; i++){
+			for(int i = 0; i<absoluteNumberOfStars-4; i++){
 				if(charsWritten<message.length()){
 					System.out.print(message.substring(charsWritten, charsWritten+1).toUpperCase());
 					charsWritten++;
@@ -27,8 +26,8 @@ public class Message {
 			System.out.println(" *");
 		}
 		
-		printEmptyLineWithStarsOnSides(numberOfStars);
-		printLineOfStars(numberOfStars);
+		printEmptyLineWithStarsOnSides(absoluteNumberOfStars);
+		printLineOfStars(absoluteNumberOfStars);
 				
 	}
 	private void printLineOfStars(int numberOfStars){

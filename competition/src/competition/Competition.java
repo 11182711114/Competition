@@ -5,14 +5,13 @@ import java.util.Scanner;
 /*
  * TODO;
  * 	high priority
- * 		sort teams output
  * 	med priority
  * 		clean code
  * 	low priority
  * 		read from file
  */
 public class Competition {
-	private static final int MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE = 60; //must be above 4
+	private static final int MESSAGE_NUMBER_CHARS_PER_LINE = 56; //relative number, absolute is +4 , done like this to absolutely avoid going into an infinite loop if it's set to under 4
 	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {};
 	
 	private Database db;
@@ -152,7 +151,7 @@ public class Competition {
 	private void message(String s){
 		//make new Message, start after "message "
 		Message message = new Message(s.substring(8));
-		message.printInBoxOfStars(MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE);
+		message.printInBoxOfStars(MESSAGE_NUMBER_CHARS_PER_LINE);
 	}
 			//public functions
 	public String inputString(String outputGuideString){
