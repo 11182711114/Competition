@@ -78,7 +78,6 @@ public class Competition {
 		return normalize(inputString("Listening:"),2);
 	}
 	private boolean handleCommands(String userInput){
-		System.out.println(userInput);
 		if(userInput.equals("load")){
 			loadDb();
 		}
@@ -196,35 +195,35 @@ public class Competition {
 		 *2 = force all lowercase
 		*/
 		String str = s.trim();
-		String output = null;
-		
-		for(int i = 0; i<str.length();i++){
-			boolean forbidden = false;
-			char ch = str.charAt(i);
-			for(char forbiddenChar : NORMALIZE_FORBIDDEN_CHARACTERS){
-				if(ch == forbiddenChar){
-					forbidden = true;
-				}
-			}
-			if(ch == ' '){
-				if(str.charAt(i+1)==' '){
-					forbidden = true;
-				}
-			}
-			if(!forbidden){
-				if(output==null){
-					output=String.valueOf(ch);
-				}
-				else{
-					output+=String.valueOf(ch);
-				}
-			}
-		}
 		//check if we trimmed the entire thing
-		if(output.isEmpty()){
+		if(str.isEmpty()){
 			return null;
 		}
 		else{
+			String output = null;
+			
+			for(int i = 0; i<str.length();i++){
+				boolean forbidden = false;
+				char ch = str.charAt(i);
+				for(char forbiddenChar : NORMALIZE_FORBIDDEN_CHARACTERS){
+					if(ch == forbiddenChar){
+						forbidden = true;
+					}
+				}
+				if(ch == ' '){
+					if(str.charAt(i+1)==' '){
+						forbidden = true;
+					}
+				}
+				if(!forbidden){
+					if(output==null){
+						output=String.valueOf(ch);
+					}
+					else{
+						output+=String.valueOf(ch);
+					}
+				}
+			}
 			//first letter to uppercase	
 			if(j == 1){
 				return output.substring(0, 1).toUpperCase()+output.substring(1).toLowerCase();
@@ -234,7 +233,7 @@ public class Competition {
 				return output.toLowerCase();
 			}
 			//return as is
-			return output;			
+			return output;
 		}
 	}
 	public ArrayList<Participant> getParticipants(){
@@ -242,23 +241,40 @@ public class Competition {
 	}
 		//participant functions
 	private void addParticipant(){
-		String gName = normalize(inputString("Participants given name:"),1);
-		String fName = normalize(inputString("Participants family name:"),1);
-		String tName = normalize(inputString("Participants team name:"),1);
+		String gName;
+		String fName;
+		String tName;
 		
-		if(gName != null && fName != null && tName != null){
-			while(getParticipantByID(participantID)!=null){
-				participantID++;
+		do{
+			gName = normalize(inputString("Participants given name:"),1);
+			if(gName==null){
+				System.out.println("Names cannot be empty");
 			}
-			Participant newParticipant = new Participant(gName,fName,tName,participantID,this);
-			participants.add(newParticipant);
-			newParticipant.addParticipantToTeam();
-			System.out.println(newParticipant+" added");
+		}while(gName==null);
+		
+		do{
+			fName = normalize(inputString("Participants family name:"),1);
+			if(fName==null){
+				System.out.println("Names cannot be empty");
+			}
+		}while(fName==null);
+		
+		do{
+			tName = normalize(inputString("Participants team name:"),1);
+			if(tName==null){
+				System.out.println("Names cannot be empty");
+			}
+		}while(tName==null);
+		
+		while(getParticipantByID(participantID)!=null){
 			participantID++;
 		}
-		else{
-			System.out.println("Error 05; null value in add participant");
-			}
+		Participant newParticipant = new Participant(gName,fName,tName,participantID,this);
+		participants.add(newParticipant);
+		newParticipant.addParticipantToTeam();
+		System.out.println(newParticipant+" added");
+		participantID++;
+		
 	}
 	private void removeParticipant(){
 		double tempRemovedID = inputNumber("Participant ID to be removed:");
