@@ -12,7 +12,7 @@ import java.util.Scanner;
  * 		read from file
  */
 public class Competition {
-	private static final int MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE = 60;
+	private static final int MESSAGE_ABSOLUTE_NUMBER_CHARS_PER_LINE = 60; //must be above 4
 	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {};
 	
 	private Database db;

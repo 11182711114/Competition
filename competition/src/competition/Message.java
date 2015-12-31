@@ -11,6 +11,7 @@ public class Message {
 	public void printInBoxOfStars(int numberOfStars){
 		int charsWritten = 0;
 		printLineOfStars(numberOfStars);
+		printEmptyLineWithStarsOnSides(numberOfStars);
 		
 		while(charsWritten<message.length()){
 			System.out.print("* ");
@@ -25,13 +26,25 @@ public class Message {
 			}
 			System.out.println(" *");
 		}
-			
+		
+		printEmptyLineWithStarsOnSides(numberOfStars);
 		printLineOfStars(numberOfStars);
 				
 	}
 	private void printLineOfStars(int numberOfStars){
 		for(int i = 0; i<numberOfStars; i++){
 			System.out.print("*");
+		}
+		System.out.println();
+	}
+	private void printEmptyLineWithStarsOnSides(int numberOfStars){
+		for(int i = 0; i<numberOfStars; i++){
+			if(i == 0 || i == numberOfStars-1){
+				System.out.print("*");
+			}
+			else{
+				System.out.print(" ");
+			}
 		}
 		System.out.println();
 	}
