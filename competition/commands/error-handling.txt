@@ -1,0 +1,109 @@
+message Grennamn med mellanslag både före och efter
+add event
+  Marathon    
+1
+n
+message Stora bokstäver (krocket har varit olympisk sport...)
+add event
+CROQUET
+2
+no
+message Tomt namn, och namn som bara består av mellanslag
+add event
+
+   
+Diving
+3
+y
+message Dublettgren, skriven på annat sätt - ska ej accepteras
+add event
+Croquet
+message För få försök, och fel typ av svar på sista frågan (y/n)
+add event
+Archery
+0
+-2
+5
+ja
+true
+yepp
+YeS
+message En deltagare med olika typer av problem vid inmatningen
+add participant
+
+   
+  DoNaLd  
+
+   
+  dUbLeTt
+
+   
+  Team  
+message Dublettdeltagaren - ska accepteras
+add participant
+Donald
+Dublett
+Another team
+message Resultatlistor utan registrerade resultat
+participant
+100
+participant
+101
+Croquet
+Archery
+teams
+message Felaktiva nummer vid försök att rapportera resultat
+add result
+99
+add result
+102
+add result
+1
+add result
+-1
+message Felaktigt grennamn vid rapportering av resultat
+add result
+100
+Pelota
+message Tomt grennamn vid rapportering av resultat
+add result
+100
+
+message Negativt resultat
+add result
+100
+Croquet
+-1
+-2
+20
+message Korrekta namn, men annan formatering
+add result
+100
+ ARCHERY 
+23
+message För många resultat
+message Resultatlistor för ickeexisterande personer
+participant
+99
+participant
+102
+participant
+-1
+message Resultatlista för ickeexisterande gren
+Pelota
+message Resultatlista för gren med annan formatering
+ ARCHERY 
+message Ta bort dublettdeltagaren (och laget) efter att skrivit fel nummer ett par gånger
+remove participant
+99
+remove participant
+102
+remove participant
+-1
+remove participant
+0
+remove participant
+1
+remove participant
+101
+exit
