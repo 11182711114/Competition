@@ -5,12 +5,14 @@ public class Participant {
 	private String familyName;
 	private Team team;
 	private int id;
+	private Competition competition;
 	
-	public Participant(String gName, String fName, String tName, int tempID, Competition c){
-		givenName = gName;
-		familyName = fName;
-		team = makeTeam(tName,c);
-		id = tempID;
+	public Participant(String givenName, String familyName, String team, int id, Competition c){
+		this.givenName = givenName;
+		this.familyName = familyName;
+		this.team = makeTeam(team,c);
+		this.id = id;
+		this.competition = c;
 	}
 	public void setName(String s){
 		givenName = s;
@@ -35,6 +37,12 @@ public class Participant {
 	}
 	public int getID(){
 		return id;		
+	}
+	public Competition getC() {
+		return competition;
+	}
+	public void setC(Competition c) {
+		this.competition = c;
 	}
 	public String namesToString(){
 		return givenName + " " + familyName + " for " + team.getName();
