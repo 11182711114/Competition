@@ -154,6 +154,18 @@ public class Event {
 		}
 		return medals;
 	}
+	public ArrayList<Result> removeResultsByParticipant(Participant p){
+		ArrayList<Result> outResults = new ArrayList<>();
+		for(Result r : results){
+			if(r.getParticipant()==p){
+				outResults.add(r);
+			}
+		}
+		if(results.removeAll(outResults)){
+			return outResults;
+		}
+		return null;
+	}
 	public ArrayList<Result> uniqueResults(){
 		ArrayList<Result> unsortedBestResults = new ArrayList<Result>();
 		
