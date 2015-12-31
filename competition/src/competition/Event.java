@@ -86,8 +86,14 @@ public class Event {
 					if(results.get(i).getTeam()==t){
 						medals[placementIndex-1]+=1;
 					}
-					printNext = false;
-					placementIndex++;
+					if(1+i<results.size()&& results.get(i).getResult()==results.get(i+1).getResult()){
+						printNext = true;
+						skipNextNumbers++;
+					}
+					else{
+						printNext = false;
+						placementIndex++;
+					}
 				}
 				//if skipNextNumber is >0 we increase placementIndex by 1 and decrease skipNextNumbers by 1
 				else if(skipNextNumbers>0){				
@@ -105,12 +111,12 @@ public class Event {
 			}
 		}
 		else{
-			for(int i = results.size()-1; i>0;i--){
+			for(int i = 0; i<results.size();i++){
 				if(placementIndex>3){
 					break;
 				}
 				//if this result is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
-				if(i>0 && skipNextNumbers==0 && results.get(i).getResult()==results.get(i-1).getResult()){
+				if(1+i<results.size() && skipNextNumbers==0 && results.get(i).getResult()==results.get(i+1).getResult()){
 					if(results.get(i).getTeam()==t){
 						medals[placementIndex-1]+=1;
 					}
@@ -122,14 +128,20 @@ public class Event {
 					if(results.get(i).getTeam()==t){
 						medals[placementIndex-1]+=1;
 					}
-					printNext = false;
-					placementIndex++;
+					if(1+i<results.size() && results.get(i).getResult()==results.get(i+1).getResult()){
+						printNext = true;
+						skipNextNumbers++;
+					}
+					else{
+						printNext = false;
+						placementIndex++;
+					}
 				}
 				//if skipNextNumber is >0 we increase placementIndex by 1 and decrease skipNextNumbers by 1
 				else if(skipNextNumbers>0){
 					placementIndex++;
 					skipNextNumbers--;
-					i++;
+					i--;
 				}			
 				//if the result is not equal to the next we print it out at placementIndex
 				else{

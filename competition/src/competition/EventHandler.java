@@ -113,8 +113,14 @@ public class EventHandler {
 				//if this result and the one before was equal print this with the same index and increase placementIndex
 				else if(printNext){
 					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
-					printNext = false;
-					placementIndex++;
+					if(1+i<sortedResults.size() && sortedResults.get(i).getResult()==sortedResults.get(i+1).getResult()){
+						printNext = true;
+						skipNextNumbers++;
+					}
+					else{
+						printNext = false;
+						placementIndex++;
+					}
 				}
 				//if skipNextNumber is >0 we increase placementIndex by 1 and decrease skipNextNumbers by 1
 				else if(skipNextNumbers>0){				
@@ -130,9 +136,9 @@ public class EventHandler {
 			}
 		}
 		else{//if !biggerBetter we iterate through the list in reverse order and compare i to i-1 instead
-			for(int i = sortedResults.size()-1; i>=0;i--){
+			for(int i = 0; i<sortedResults.size();i++){
 				//if this result is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
-				if(i-1>=0 && skipNextNumbers==0 && sortedResults.get(i).getResult()==sortedResults.get(i-1).getResult()){
+				if(1+i<sortedResults.size() && skipNextNumbers==0 && sortedResults.get(i).getResult()==sortedResults.get(i+1).getResult()){
 					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
 					skipNextNumbers++;
 					printNext = true;
@@ -140,14 +146,20 @@ public class EventHandler {
 				//if this result and the one before was equal print this with the same index and increase placementIndex
 				else if(printNext){
 					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
-					printNext = false;
-					placementIndex++;
+					if(1+i<sortedResults.size()&& sortedResults.get(i).getResult()==sortedResults.get(i+1).getResult()){
+						printNext=true;
+						skipNextNumbers++;
+					}
+					else{
+						printNext = false;
+						placementIndex++;
+					}
 				}
 				//if skipNextNumber is >0 we increase placementIndex by 1 and decrease skipNextNumbers by 1
 				else if(skipNextNumbers>0){				
 					placementIndex++;
 					skipNextNumbers--;
-					i++;
+					i--;
 				}			
 				//if the result is not equal to the next we print it out at placementIndex
 				else{
