@@ -4,6 +4,7 @@ public class Result implements Comparable<Result>{
 	private double results;
 	private Participant participant;
 	private Event event;
+	private int placement;
 	
 	public Result(Participant inputParticipant, Event e, double result){
 		results = result;
@@ -27,9 +28,15 @@ public class Result implements Comparable<Result>{
 	public void setEvent(Event e){
 		event = e;
 	}
+	public void setPlacement(int i){
+		placement = i;
+	}
 	@Override
 	public String toString(){
 		return "Result:"+results+" Event name: "+ event.getName() +" participant ID: "+participant.getID();
+	}
+	public String printResult(){
+		return "Placement: "+placement+" Result:"+results+" Event name: "+ event.getName() +" participant ID: "+participant.getID();
 	}
 	public int getParticipantID(){
 		return participant.getID();
@@ -45,6 +52,9 @@ public class Result implements Comparable<Result>{
 	}
 	public String getEventName(){
 		return event.getName();
+	}
+	public int getPlacement(){
+		return placement;
 	}
 	@Override
 	public int compareTo(Result r) {

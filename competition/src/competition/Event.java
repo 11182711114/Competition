@@ -39,6 +39,67 @@ public class Event {
 	public ArrayList<Result> getResults(){
 		return results;
 	}
+	public void updatePlacement(){
+		ArrayList<Result> tempResults = getUniqueResults();
+		Collections.sort(tempResults);
+		
+		int placementIndex = 1;
+		int skipNextNumbers = 0;
+		boolean printNext = false;
+		for(int i = 0; i<tempResults.size(); i++){
+			Result thisResult = tempResults.get(i);
+			Result nextResult = null;
+			if(tempResults.size()>i+1){
+				nextResult = tempResults.get(i+1);
+			}
+			//if thisResult is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
+			if(1+i<tempResults.size() && skipNextNumbers==0 && thisResult.getResult()==nextResult.getResult()){
+				thisResult.setPlacement(placementIndex);
+				skipNextNumbers++;
+				printNext = true;
+			}
+			//if thisResult and the one before was equal print this with the same index and increase placementIndex
+			else if(printNext){
+				thisResult.setPlacement(placementIndex);
+				if(1+i<tempResults.size()&& thisResult.getResult()==nextResult.getResult()){
+					printNext = true;
+					skipNextNumbers++;
+				}
+				else{
+					printNext = false;
+					placementIndex++;
+				}
+			}
+			//if skipNextNumber is >0 we increase placementIndex by 1 and decrease skipNextNumbers by 1 and decrease i since this iteration shouldn't count
+			else if(skipNextNumbers>0){				
+				placementIndex++;
+				skipNextNumbers--;
+				i--;
+			}			
+			//if thisResult is not equal to the next we set it out at placementIndex
+			else{
+				thisResult.setPlacement(placementIndex);
+				placementIndex++;
+			}		
+		}
+	}
+	public ArrayList<Result> getMedals(){
+		ArrayList<Result> medals = new  ArrayList<>();
+		for(Result r : results){
+			if(r.getPlacement()<4 && r.getPlacement()>0){
+				medals.add(r);
+			}
+		}
+		return medals;
+	}
+	public void printResults(){
+		Collections.sort(results);
+		for(Result r : results){
+			if(r.getPlacement()>0){
+				System.out.println(r.printResult());
+			}
+		}
+	}
 	public boolean checkAllowedMoreAttempts(Participant p){
 		if(checkNumberAttempts(p)<attempts){
 			return true;
@@ -62,7 +123,7 @@ public class Event {
 		 * else check if result.getTeam() = t if so medals[placement-1]+=1
 		 */
 		int[] medals = {0,0,0};
-		ArrayList<Result> results = uniqueResults();
+		ArrayList<Result> results = getUniqueResults();
 		Collections.sort(results);
 		
 		int placementIndex = 1;
@@ -166,7 +227,7 @@ public class Event {
 		}
 		return null;
 	}
-	public ArrayList<Result> uniqueResults(){
+	public ArrayList<Result> getUniqueResults(){
 		ArrayList<Result> unsortedBestResults = new ArrayList<Result>();
 		
 		//go through all participants and find their best result and then store it in the output array

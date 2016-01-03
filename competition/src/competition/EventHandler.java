@@ -99,80 +99,6 @@ public class EventHandler {
 	public boolean getBiggerBetterForEventByName(String eName){
 		return getEventByName(eName).getBiggerBetter();
 	}
-	public void printResultsWithPlacement(ArrayList<Result> results,boolean biggerBetter){
-		ArrayList<Result> sortedResults = sortResults(results);
-		
-		int placementIndex = 1;
-		int skipNextNumbers = 0;
-		boolean printNext = false;
-		if(biggerBetter){
-		//iterate the sortedResults if a bigger number is better
-			for(int i = 0; i<sortedResults.size();i++){
-				//if this result is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
-				if(1+i<sortedResults.size() && skipNextNumbers==0 && sortedResults.get(i).getResult()==sortedResults.get(i+1).getResult()){
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
-					skipNextNumbers++;
-					printNext = true;
-				}
-				//if this result and the one before was equal print this with the same index and increase placementIndex
-				else if(printNext){
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
-					if(1+i<sortedResults.size() && sortedResults.get(i).getResult()==sortedResults.get(i+1).getResult()){
-						printNext = true;
-						skipNextNumbers++;
-					}
-					else{
-						printNext = false;
-						placementIndex++;
-					}
-				}
-				//if skipNextNumber is >0 we increase placementIndex by 1 and decrease skipNextNumbers by 1
-				else if(skipNextNumbers>0){				
-					placementIndex++;
-					skipNextNumbers--;
-					i--;
-				}			
-				//if the result is not equal to the next we print it out at placementIndex
-				else{
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
-					placementIndex++;
-				}		
-			}
-		}
-		else{//if !biggerBetter we iterate through the list in reverse order and compare i to i-1 instead
-			for(int i = 0; i<sortedResults.size();i++){
-				//if this result is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
-				if(1+i<sortedResults.size() && skipNextNumbers==0 && sortedResults.get(i).getResult()==sortedResults.get(i+1).getResult()){
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
-					skipNextNumbers++;
-					printNext = true;
-				}
-				//if this result and the one before was equal print this with the same index and increase placementIndex
-				else if(printNext){
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
-					if(1+i<sortedResults.size()&& sortedResults.get(i).getResult()==sortedResults.get(i+1).getResult()){
-						printNext=true;
-						skipNextNumbers++;
-					}
-					else{
-						printNext = false;
-						placementIndex++;
-					}
-				}
-				//if skipNextNumber is >0 we increase placementIndex by 1 and decrease skipNextNumbers by 1
-				else if(skipNextNumbers>0){				
-					placementIndex++;
-					skipNextNumbers--;
-					i--;
-				}			
-				//if the result is not equal to the next we print it out at placementIndex
-				else{
-					System.out.println(placementIndex + " " +sortedResults.get(i).getResult()+" "+ sortedResults.get(i).getParticipantName() +" "+ sortedResults.get(i).getTeamName());
-					placementIndex++;
-				}		
-			}
-		}
-	}
 	public void printResults(Participant p){
 		for(Event e : events){
 			System.out.print("Results for "+ p.getFullName() +" in "+ e.getName() +": ");
@@ -188,9 +114,11 @@ public class EventHandler {
 		}
 	}
 	public void printResultByEvent(String eventName){
-		ArrayList<Result> resultToPrint = getEventByName(eventName).uniqueResults();
+		ArrayList<Result> results = sortResults(getEventByName(eventName).getUniqueResults());
 		System.out.println("Results for " + comp.normalize(eventName,1));
-		printResultsWithPlacement(resultToPrint,getBiggerBetterForEventByName(eventName));
+		for(Result r : results){
+			System.out.println(r.printResult());
+		}
 	}
 	public void printResultByParticipant(){
 		double temp = comp.inputNumber("Participant ID:");
@@ -204,8 +132,48 @@ public class EventHandler {
 			}
 		}
 	}
+	public String[][] getTeamMedals(){
+		ArrayList<Team> teams = getTeams();
+		String[][] medals = new String[teams.size()][4];
+		for(int i = 0; i<teams.size(); i++){
+			medals[i][0] = ""+0;
+			medals[i][1] = ""+0;
+			medals[i][2] = ""+0;
+			medals[i][3] = teams.get(i).getName();
+			for(Event e : events){
+				e.updatePlacement();
+				ArrayList<Result> eventMedals = e.getMedals();
+				for(Result r : eventMedals){
+					if(teams.get(i)==r.getTeam()){
+						switch(r.getPlacement()){
+						case 1:
+							medals[i][0] =String.valueOf((Integer.parseInt(medals[i][0])+1));
+							break;
+						case 2:
+							medals[i][1] =String.valueOf((Integer.parseInt(medals[i][1])+1));
+							break;
+						case 3:
+							medals[i][2] =String.valueOf((Integer.parseInt(medals[i][2])+1));
+							break;
+						}
+					}
+				}
+			}
+		}
+		return medals;
+	}
+	public ArrayList<Team> getTeams(){
+		ArrayList<Participant> parts = comp.getParticipants();
+		ArrayList<Team> teams = new ArrayList<>();
+		for(Participant p : parts){
+			if(!teams.contains(p.getTeam())){
+				teams.add(p.getTeam());
+			}
+		}
+		return teams;
+	}
 	public void printMedals(){
-		String[][] output = sortMedals(getMedals());
+		String[][] output = sortMedals(getTeamMedals());
 
 		for(String[] s : output){
 			for(int i = 0; i<s.length;i++){
@@ -214,36 +182,8 @@ public class EventHandler {
 			System.out.println();
 		}
 	}
-	private String[][] getMedals(){
-		ArrayList<Participant> parts = comp.getParticipants();
-		ArrayList<Team> teams = new ArrayList<>();
-		for(Participant p : parts){
-			if(!teams.contains(p.getTeam())){
-				teams.add(p.getTeam());
-			}
-		}
-		String[][] str = new String[teams.size()][4];
-		for(int i = 0; i<teams.size();i++){
-			str[i][3] = teams.get(i).getName();
-			int[] temp = getMedalsByTeam(teams.get(i));
-			str[i][0]=""+temp[0];
-			str[i][1]=""+temp[1];
-			str[i][2]=""+temp[2];
-		}
-		return str;
-	}
-	private int[] getMedalsByTeam(Team t){
-		int[] medals = new int[3];
-		for(Event e : events){
-			int[] temp = e.getMedalsByTeam(t);
-			medals[0]+=temp[0];
-			medals[1]+=temp[1];
-			medals[2]+=temp[2];
-		}
-		return medals;		
-	}
 	private String[][] sortMedals(String[][] medals){ // credit to "Boris the Spider" http://stackoverflow.com/questions/15452429/java-arrays-sort-2d-array for the base of the custom Comparator
-		Comparator<String[]> compare = new java.util.Comparator<String[]>() {
+		Comparator<String[]> compare = new Comparator<String[]>() {
 			@Override
 			public int compare(String[] o1, String[] o2) {
 				int[] a1= {Integer.parseInt(o1[0]),Integer.parseInt(o1[1]),Integer.parseInt(o1[2])};
@@ -344,6 +284,7 @@ public class EventHandler {
 						Result r = new Result(p,e,thisResultValue);
 						e.addResult(r);
 						System.out.println(r + " has been added");
+						e.updatePlacement();
 					}
 					else{
 						System.out.println("Too many attempts!");
@@ -361,6 +302,7 @@ public class EventHandler {
 	public void removeResultsByParticipant(Participant p){
 		for(Event e : events){
 			e.removeResultsByParticipant(p);
+			e.updatePlacement();
 		}
 	}
 	public boolean reinitialize(){
