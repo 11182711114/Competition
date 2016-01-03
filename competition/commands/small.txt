@@ -1,0 +1,74 @@
+add event
+long jump
+3
+y
+add event
+Marathon
+1
+no
+message Lägg till: Ada och Alan från datorhistorien
+add participant
+Ada
+Lovelace
+Computing
+add participant
+Alan
+Turing
+Computing
+message Resultatlistor utan registrerade resultat
+message Resultat för Ada
+participant
+100
+message Resultat för Alan
+participant
+101
+long jump
+Marathon
+teams
+message Inmatning av resultat
+message Resultat för Ada i long jump
+add result
+100
+long jump
+6.4
+message Resultat för Alan i Marathon
+add result
+101
+Marathon
+2.48
+message Resultat för Ada i Marathon
+add result
+100
+Marathon
+2.5
+message Resultat för Alan i long jump
+add result
+101
+long jump
+6.5
+message Resultat för Ada i long jump
+add result
+100
+long jump
+6.93
+message Resultat för Alan i long jump
+add result
+101
+long jump
+6.75
+message Resultat för Alan i long jump
+add result
+101
+long jump
+0.0
+message Resultatlistor: Ada vinner längdhopp, Alan maraton
+message Resultat för Ada
+participant
+100
+message Resultat för Alan
+participant
+101
+long jump
+Marathon
+teams
+exit

@@ -40,6 +40,9 @@ public class EventHandler {
 						tooLowAttempts = true;
 						System.out.println("Error 02: Attempts value too low, allowed: 1 or higher");
 					}
+					else{
+						tooLowAttempts = false;
+					}
 				}
 			}while(tooLowAttempts);
 			
@@ -50,6 +53,9 @@ public class EventHandler {
 				if(!biggerBetter.equals("y") && !biggerBetter.equals("n") && !biggerBetter.equals("yes") && !biggerBetter.equals("no")){
 					incorrectInput = true;
 					System.out.println("Error 03: Incorrect input, allowed sepparated by \",\": y,n,yes,no");
+				}
+				else{
+					incorrectInput = false;	
 				}
 			}while(incorrectInput);
 			
@@ -100,17 +106,24 @@ public class EventHandler {
 		return getEventByName(eName).getBiggerBetter();
 	}
 	public void printResults(Participant p){
+		boolean hasResults = false;
 		for(Event e : events){
-			System.out.print("Results for "+ p.getFullName() +" in "+ e.getName() +": ");
-			double[] results = getFormattedResultForParticipantForEvent(p,e);
-			for(int i = 0; i<results.length;i++){
-				if(i+1>=results.length){
-					System.out.println(results[i]);
-				}
-				else{
-					System.out.print(results[i]+", ");
+			if(e.checkNumberAttempts(p)>0){
+				hasResults = true;
+				System.out.print("Results for "+ p.getFullName() +" in "+ e.getName() +": ");
+				double[] results = getFormattedResultForParticipantForEvent(p,e);
+				for(int i = 0; i<results.length;i++){
+					if(i+1>=results.length){
+						System.out.println(results[i]);
+					}
+					else{
+						System.out.print(results[i]+", ");
+					}
 				}
 			}
+		}
+		if(!hasResults){
+			System.out.println(p + " has no registered results");
 		}
 	}
 	public void printResultByEvent(String eventName){
@@ -273,7 +286,7 @@ public class EventHandler {
 							}					
 							thisResultValue = comp.inputNumber("Result as decimal number:");
 							if(!Double.isNaN(thisResultValue)){
-								if(thisResultValue<=0){
+								if(thisResultValue<0){
 									inproperValue = true;
 								}
 								else{
