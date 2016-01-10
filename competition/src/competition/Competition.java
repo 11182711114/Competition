@@ -217,7 +217,7 @@ public class Competition {
 	public String inputString(String outputGuideString){
 		if(isFileSet()){
 			String s = readFromFile();
-			System.out.println(("#: "+s));
+			System.out.println(("# "+s));
 			return s;
 		}
 		@SuppressWarnings("resource")
@@ -229,7 +229,7 @@ public class Competition {
 		String dOutput;
 		if(isFileSet()){
 			String s = readFromFile();
-			System.out.println("#: "+s);
+			System.out.println("# "+s);
 			dOutput = s;
 		}
 		else{
