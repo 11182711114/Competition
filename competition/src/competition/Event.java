@@ -25,7 +25,7 @@ public class Event {
 		for(int i = 0; i<tempResults.size(); i++){
 			Result thisResult = tempResults.get(i);
 			Result nextResult = null;
-			Placement placement = new Placement(placementIndex,thisResult);
+			Placement placement = getPlacementForIndex(placementIndex,thisResult);
 			if(tempResults.size()>i+1){
 				nextResult = tempResults.get(i+1);
 			}
@@ -59,6 +59,14 @@ public class Event {
 				placementIndex++;
 			}		
 		}
+	}
+	public Placement getPlacementForIndex(int placement,Result result){
+		for(Result r : results){
+			if(r.getPlacementIndex()==placement){
+				return r.getPlacement();
+			}
+		}
+		return new Placement(placement,result);
 	}
 	public ArrayList<Result> getMedals(){
 		ArrayList<Result> medals = new  ArrayList<>();

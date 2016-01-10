@@ -84,7 +84,7 @@ public class Result implements Comparable<Result>{
 	public void setEvent(Event e){
 		this.event = e;
 	}
-	public void setPlacement(Placement place){
-		this.placement = place;
+	public void setPlacement(Placement placement){
+		this.placement = placement;
 	}
 }
