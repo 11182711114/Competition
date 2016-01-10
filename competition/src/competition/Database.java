@@ -48,7 +48,10 @@ public class Database {
 		String dbName;
 		do{
 			dbName = comp.inputString("Choose which database to use or make a new one:");
-			if(!dbName.equals("")){ //lets not allow "" as a name
+			if(dbName.equals("") || dbName.isEmpty()){ //lets not allow "" as a name
+				System.out.println("Database name cannot be empty");
+			}
+			else{
 				break;
 			}
 		}while(true);
@@ -61,7 +64,7 @@ public class Database {
 		}
 	}
 	public void checkDbFolder(){
-		if(!ABSOLUTE_DB_FOLDER_PATH.exists() && !ABSOLUTE_DB_FOLDER_PATH.isDirectory()){
+		if(!ABSOLUTE_DB_FOLDER_PATH.exists() || !ABSOLUTE_DB_FOLDER_PATH.isDirectory()){
 			ABSOLUTE_DB_FOLDER_PATH.mkdir();
 		}
 	}
@@ -96,7 +99,10 @@ public class Database {
 			}
 			sc.close();
 			return parts;
-		} catch(Exception E){System.out.println("Database error 02");}
+		} 
+		catch(Exception E){
+			System.out.println("Database error 02");
+		}
 		return null;
 	}
 	public ArrayList<Event> getEventsFromDb(){
@@ -117,10 +123,10 @@ public class Database {
 							tempEvent.setName(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1])));
 							break;
 						case "|a|":
-							tempEvent.setTries(Integer.parseInt(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1]))));
+							tempEvent.setAttempts(Integer.parseInt(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1]))));
 							break;
 						case "|b|":
-							tempEvent.setIsBiggerBetter(Boolean.parseBoolean(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1]))));
+							tempEvent.setBiggerBetter(Boolean.parseBoolean(line.substring(line.indexOf(tags[i])+tags[i].length(), line.indexOf(tags[i+1]))));
 							break;
 						}
 					}

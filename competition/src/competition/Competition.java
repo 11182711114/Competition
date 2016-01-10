@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 /*
  * TODO;
@@ -11,10 +12,10 @@ import java.util.Scanner;
  * 	med priority
  * 		clean code
  * 	low priority
- * 		read from file
  */
 public class Competition {
 	private static final int MESSAGE_NUMBER_CHARS_PER_LINE = 56; //relative number, absolute is +4 , done like this to absolutely avoid going into an infinite loop if it's set to under 4
+	private static final char MESSAGE_BOX_CHAR = '*';
 	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {};
 	
 	private File file;
@@ -24,7 +25,7 @@ public class Competition {
 	private Database db;
 	private EventHandler eventHandler;
 	
-	private ArrayList<Participant> participants = new ArrayList<Participant>();
+	private ArrayList<Participant> participants = new ArrayList<>();
 	private int participantID = 100;
 	
 	
@@ -48,7 +49,7 @@ public class Competition {
 	private void exit(){
 		saveDb();
 	}
-	//database functions
+	//database & file functions
 	private void saveDb(){
 		if(db.databaseSelected()){
 			db.writeToFile(eventHandler.getAllEvents(), participants);
@@ -62,16 +63,20 @@ public class Competition {
 			ArrayList<Participant> parts = db.getParticipantsFromDb();
 			if(!parts.isEmpty()){
 				for(Participant p : parts){
-					participants.add(new Participant(p.getName(),p.getFamilyName(),p.getTeamName(),p.getID(),this));
+					Participant part = new Participant(p.getName(),p.getFamilyName(),p.getTeamName(),p.getID(),this);
+					participants.add(part);
+					part.addParticipantToTeam();
 				}
 			}
 			ArrayList<Event> events = db.getEventsFromDb();
 			if(!events.isEmpty()){
 				for(Event e : events){
-					eventHandler.addEvent(e.getName(),e.getTries(),e.getBiggerBetter());
+					eventHandler.addEvent(e.getName(),e.getAttempts(),e.getBiggerBetter());
 					for(Result r : e.getResults()){
 						eventHandler.getEventByName(e.getName()).addResult(r);
+						r.getParticipant().addResult(r);
 					}
+					e.updatePlacement();
 				}
 			}
 		}
@@ -155,7 +160,7 @@ public class Competition {
 				eventHandler.printResultByParticipant();
 			}			
 			else if(userInput.equals("teams")){
-				eventHandler.printMedals();
+				printMedals();
 			}
 			else if(userInput.contains("message")){
 				message(userInput);
@@ -206,13 +211,13 @@ public class Competition {
 	private void message(String s){
 		//make new Message, start after "message "
 		Message message = new Message(s.substring(8));
-		message.printInBoxOfStars(MESSAGE_NUMBER_CHARS_PER_LINE);
+		message.printInBox(MESSAGE_NUMBER_CHARS_PER_LINE,MESSAGE_BOX_CHAR);
 	}
 			//public functions
 	public String inputString(String outputGuideString){
 		if(isFileSet()){
 			String s = readFromFile();
-			System.out.println("input: "+s);
+			System.out.println(("#: "+s));
 			return s;
 		}
 		@SuppressWarnings("resource")
@@ -224,7 +229,7 @@ public class Competition {
 		String dOutput;
 		if(isFileSet()){
 			String s = readFromFile();
-			System.out.println("input: "+s);
+			System.out.println("#: "+s);
 			dOutput = s;
 		}
 		else{
@@ -401,5 +406,23 @@ public class Competition {
 			}
 		}
 		return false;
+	}
+	private ArrayList<Team> getTeams(){
+		ArrayList<Team> teams = new ArrayList<>();
+		for(Participant p : participants){
+			Team t = p.getTeam();
+			if(!teams.contains(t)){
+				teams.add(t);
+			}
+		}
+		return teams;
+	}
+	private void printMedals(){
+		ArrayList<Team> teams = getTeams();
+		Collections.sort(teams);
+		
+		for(Team t : teams){
+			System.out.println(t.getTeamsPlacementsAsString() + " " + t.getName());
+		}
 	}
 }

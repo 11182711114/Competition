@@ -6,14 +6,14 @@ public class Message {
 	public Message(String messageIn){
 		message = messageIn;
 	}
-	public void printInBoxOfStars(int numberOfStars){
+	public void printInBox(int numberOfStars, char boxChar){
 		int absoluteNumberOfStars = numberOfStars+4;//add 4 so we dont go into an infinite loop
 		int charsWritten = 0;
-		printLineOfStars(absoluteNumberOfStars);
-		printEmptyLineWithStarsOnSides(absoluteNumberOfStars);
+		printLineOfChar(absoluteNumberOfStars,boxChar);
+		printEmptyLineWithStarsOnSides(absoluteNumberOfStars,boxChar);
 		
 		while(charsWritten<message.length()){
-			System.out.print("* ");
+			System.out.print(boxChar+" ");
 			for(int i = 0; i<absoluteNumberOfStars-4; i++){
 				if(charsWritten<message.length()){
 					System.out.print(message.substring(charsWritten, charsWritten+1).toUpperCase());
@@ -23,23 +23,23 @@ public class Message {
 					System.out.print(" ");
 				}
 			}
-			System.out.println(" *");
+			System.out.println(" "+boxChar);
 		}
 		
-		printEmptyLineWithStarsOnSides(absoluteNumberOfStars);
-		printLineOfStars(absoluteNumberOfStars);
+		printEmptyLineWithStarsOnSides(absoluteNumberOfStars,boxChar);
+		printLineOfChar(absoluteNumberOfStars,boxChar);
 				
 	}
-	private void printLineOfStars(int numberOfStars){
+	private void printLineOfChar(int numberOfStars,char c){
 		for(int i = 0; i<numberOfStars; i++){
-			System.out.print("*");
+			System.out.print(c);
 		}
 		System.out.println();
 	}
-	private void printEmptyLineWithStarsOnSides(int numberOfStars){
+	private void printEmptyLineWithStarsOnSides(int numberOfStars, char c){
 		for(int i = 0; i<numberOfStars; i++){
 			if(i == 0 || i == numberOfStars-1){
-				System.out.print("*");
+				System.out.print(c);
 			}
 			else{
 				System.out.print(" ");

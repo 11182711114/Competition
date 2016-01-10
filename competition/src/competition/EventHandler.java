@@ -1,9 +1,7 @@
 package competition;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class EventHandler {
 	private ArrayList<Event> events = new ArrayList<Event>();
@@ -145,114 +143,11 @@ public class EventHandler {
 			}
 		}
 	}
-	public String[][] getTeamMedals(){
-		ArrayList<Team> teams = getTeams();
-		String[][] medals = new String[teams.size()][4];
-		for(int i = 0; i<teams.size(); i++){
-			medals[i][0] = ""+0;
-			medals[i][1] = ""+0;
-			medals[i][2] = ""+0;
-			medals[i][3] = teams.get(i).getName();
-			for(Event e : events){
-				e.updatePlacement();
-				ArrayList<Result> eventMedals = e.getMedals();
-				for(Result r : eventMedals){
-					if(teams.get(i)==r.getTeam()){
-						switch(r.getPlacement()){
-						case 1:
-							medals[i][0] =String.valueOf((Integer.parseInt(medals[i][0])+1));
-							break;
-						case 2:
-							medals[i][1] =String.valueOf((Integer.parseInt(medals[i][1])+1));
-							break;
-						case 3:
-							medals[i][2] =String.valueOf((Integer.parseInt(medals[i][2])+1));
-							break;
-						}
-					}
-				}
-			}
-		}
-		return medals;
-	}
-	public ArrayList<Team> getTeams(){
-		ArrayList<Participant> parts = comp.getParticipants();
-		ArrayList<Team> teams = new ArrayList<>();
-		for(Participant p : parts){
-			if(!teams.contains(p.getTeam())){
-				teams.add(p.getTeam());
-			}
-		}
-		return teams;
-	}
-	public void printMedals(){
-		String[][] output = sortMedals(getTeamMedals());
-
-		for(String[] s : output){
-			for(int i = 0; i<s.length;i++){
-				System.out.print(s[i] + " ");
-			}
-			System.out.println();
-		}
-	}
-	private String[][] sortMedals(String[][] medals){ // credit to "Boris the Spider" http://stackoverflow.com/questions/15452429/java-arrays-sort-2d-array for the base of the custom Comparator
-		Comparator<String[]> compare = new Comparator<String[]>() {
-			@Override
-			public int compare(String[] o1, String[] o2) {
-				int[] a1= {Integer.parseInt(o1[0]),Integer.parseInt(o1[1]),Integer.parseInt(o1[2])};
-				int[] a2= {Integer.parseInt(o2[0]),Integer.parseInt(o2[1]),Integer.parseInt(o2[2])};
-				int[] a3 = subtractArray(a1,a2);
-				if(a3[0]>0){
-					return -1;
-				}
-				else if(a3[0]<0){
-					return 1;
-				}
-				else{
-					if(a3[1]>0){
-						return -1;
-					}
-					else if(a3[1]<0){
-						return 1;
-					}
-					else{
-						if(a3[2]>0){
-							return -1;
-						}
-						else if(a3[2]<0){
-							return 1;
-						}
-						else{
-							if(o1[3].compareToIgnoreCase(o2[3])==1){
-								return 1;
-							}
-							if(o1[3].compareToIgnoreCase(o2[3])==-1){
-								return -1;
-							}
-							else{
-								return 0;
-							}
-						}
-					}
-				}
-			}
-		};
-		Arrays.sort(medals, compare);
-		return medals;
-	}
-	private int[] subtractArray(int[] a1,int[] a2){
-		int[] output = new int[a1.length];
-		for(int i = 0;i<a1.length;i++){
-			output[i] = a1[i]-a2[i];
-		}
-		return output;
-	}
 	private ArrayList<Result> sortResults(ArrayList<Result> results){
 		ArrayList<Result> sortedResults = results;
 		Collections.sort(results);
 		return sortedResults;
 	}
-	
 	private double[] getFormattedResultForParticipantForEvent(Participant p, Event e){
 		ArrayList<Result> results = new ArrayList<>();
 		ArrayList<Result> tempResults = e.getResults();
@@ -296,6 +191,7 @@ public class EventHandler {
 						}while(inproperValue);
 						Result r = new Result(p,e,thisResultValue);
 						e.addResult(r);
+						p.addResult(r);
 						System.out.println(r + " has been added");
 						e.updatePlacement();
 					}
