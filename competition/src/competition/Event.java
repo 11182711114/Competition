@@ -20,28 +20,29 @@ public class Event {
 		ArrayList<Result> tempResults = getUniqueResults();
 		Collections.sort(tempResults);
 		placements.clear();//clear placement to prevent multiple refrences to the same placement
-		
 		int placementIndex = 1;
 		int skipNextNumbers = 0;
 		boolean printNext = false;
 		for(int i = 0; i<tempResults.size(); i++){
 			Result thisResult = tempResults.get(i);
 			Result nextResult = null;
-			Placement placement = getPlacementForIndex(placementIndex,thisResult);
+			Placement placement = getPlacementForIndex(placementIndex);
 			if(tempResults.size()>i+1){//only set nextResult if we actually have a next result
 				nextResult = tempResults.get(i+1);
 			}
 			//if thisResult is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
 			if(nextResult!=null && skipNextNumbers==0 && thisResult.getResult()==nextResult.getResult()){
 				thisResult.setPlacement(placement);
-				placements.add(placement);
+				placement.addResult(thisResult);
+				addPlacement(placement);
 				skipNextNumbers++;
 				printNext = true;
 			}
 			//if thisResult and the one before was equal print this with the same index and increase placementIndex
 			else if(printNext){
 				thisResult.setPlacement(placement);
-				placements.add(placement);
+				placement.addResult(thisResult);
+				addPlacement(placement);
 				if(1+i<tempResults.size()&& thisResult.getResult()==nextResult.getResult()){
 					printNext = true;
 					skipNextNumbers++;
@@ -60,18 +61,59 @@ public class Event {
 			//if thisResult is not equal to the next we set it out at placementIndex
 			else{
 				thisResult.setPlacement(placement);
-				placements.add(placement);
+				placement.addResult(thisResult);
+				addPlacement(placement);
 				placementIndex++;
 			}		
 		}
+//		for(int i = 0; i<tempResults.size(); i++){
+//			Result thisResult = tempResults.get(i);
+//			Result nextResult = null;
+//			Placement placement = getPlacementForIndex(placementIndex);
+//			if(tempResults.size()>i+1){//only set nextResult if we actually have a next result
+//				nextResult = tempResults.get(i+1);
+//			}
+//			if(nextResult!=null && thisResult.getResult() == nextResult.getResult()){
+//				thisResult.setPlacement(placement);
+//				addPlacement(placement);
+//				placementIndex++;
+//				while(i<tempResults.size()-1){
+//					i++;
+//					thisResult = tempResults.get(i);
+//					nextResult = tempResults.get(i+1);
+//					if(thisResult.getResult() == nextResult.getResult()){
+//						thisResult.setPlacement(placement);
+//						addPlacement(placement);
+//						placementIndex++;
+//					}
+//					else{
+//						placement = getPlacementForIndex(placementIndex);
+//						thisResult.setPlacement(placement);
+//						addPlacement(placement);
+//						placementIndex++;
+//						break;
+//					}
+//				}
+//			}
+//			else{
+//				thisResult.setPlacement(placement);
+//				addPlacement(placement);
+//				placementIndex++;
+//			}
+//		}
 	}
-	public Placement getPlacementForIndex(int placement,Result result){
-		for(Result r : results){
-			if(r.getPlacementIndex()==placement){
-				return r.getPlacement();
+	private void addPlacement(Placement place){
+		if(!placements.contains(place)){
+			placements.add(place);
+		}
+	}
+	public Placement getPlacementForIndex(int placement){
+		for(Placement place : placements){
+			if(place.getPlacement()==placement){
+				return place;
 			}
 		}
-		return new Placement(placement,result);
+		return new Placement(placement);
 	}
 	public ArrayList<Result> getMedals(){
 		ArrayList<Result> medals = new  ArrayList<>();

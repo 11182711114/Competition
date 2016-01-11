@@ -6,13 +6,8 @@ public class Placement implements Comparable<Placement>{
 	private int placement;
 	private ArrayList<Result> results = new ArrayList<>();
 	
-	public Placement(int placement, ArrayList<Result> results){
+	public Placement(int placement){
 		this.placement = placement;
-		this.results = results;
-	}
-	public Placement(int placement,Result r){
-		this.placement = placement;
-		this.results.add(r);
 	}
 	public boolean removeResult(Result r){
 		return results.remove(r);
@@ -30,12 +25,21 @@ public class Placement implements Comparable<Placement>{
 	}
 	//get and set
 	public void addResult(Result r){
-		results.add(r);
+		if(!results.contains(r)){
+			results.add(r);
+		}
 	}
 	public ArrayList<Result> getResults(){
 		return results;
 	}
 	public int getPlacement(){
 		return placement;
+	}
+	public String toString(){
+		String output = placement + " - ";
+		for(Result r : results){
+			output+="%"+r;
+		}
+		return "{"+output+"}";
 	}
 }

@@ -83,4 +83,8 @@ public class Result implements Comparable<Result>{
 	public void setPlacement(Placement placement){
 		this.placement = placement;
 	}
+	@Override
+	public String toString(){
+		return this.result+" "+participant.getFullName()+" "+participant.getID();
+	}
 }
