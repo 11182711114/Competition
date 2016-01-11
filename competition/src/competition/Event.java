@@ -19,6 +19,7 @@ public class Event {
 	public void updatePlacement(){
 		ArrayList<Result> tempResults = getUniqueResults();
 		Collections.sort(tempResults);
+		placements.clear();//clear placement to prevent multiple refrences to the same placement
 		
 		int placementIndex = 1;
 		int skipNextNumbers = 0;
@@ -111,12 +112,22 @@ public class Event {
 		for(Result r : results){
 			if(r.getParticipant()==p){
 				outResults.add(r);
+				removeResultFromPlacement(r);
 			}
 		}
 		if(results.removeAll(outResults)){
 			return outResults;
 		}
 		return null;
+	}
+	public boolean removeResultFromPlacement(Result r){
+		for(Placement place : placements){
+			boolean isRemoved = place.removeResult(r);
+			if(isRemoved){
+				return true;
+			}
+		}
+		return false;
 	}
 	public ArrayList<Result> getUniqueResults(){
 		ArrayList<Result> unsortedBestResults = new ArrayList<Result>();
