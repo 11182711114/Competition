@@ -14,11 +14,8 @@ public class Placement {
 		this.placement = placement;
 		this.results.add(r);
 	}
-	
-	
-	
 	//get and set
-	public void addParticipant(Result r){
+	public void addResult(Result r){
 		results.add(r);
 	}
 	public ArrayList<Result> getResults(){

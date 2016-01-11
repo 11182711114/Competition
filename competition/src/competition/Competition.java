@@ -161,6 +161,7 @@ public class Competition {
 			}			
 			else if(userInput.equals("teams")){
 				printMedals();
+				
 			}
 			else if(userInput.contains("message")){
 				message(userInput);
