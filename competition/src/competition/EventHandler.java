@@ -125,10 +125,13 @@ public class EventHandler {
 		}
 	}
 	public void printResultByEvent(String eventName){
-		ArrayList<Result> results = sortResults(getEventByName(eventName).getUniqueResults());
-		System.out.println("Results for " + comp.normalize(eventName,1));
-		for(Result r : results){
-			System.out.println(r.printResult());
+		ArrayList<Placement> placements = getEventByName(eventName).getPlacements();
+		Collections.sort(placements);
+		for(Placement place : placements){
+			String[] output = place.toPrint();
+			for(String s : output){
+				System.out.println(s);
+			}
 		}
 	}
 	public void printResultByParticipant(){
@@ -142,11 +145,6 @@ public class EventHandler {
 				System.out.println("No participant with ID " + id);
 			}
 		}
-	}
-	private ArrayList<Result> sortResults(ArrayList<Result> results){
-		ArrayList<Result> sortedResults = results;
-		Collections.sort(results);
-		return sortedResults;
 	}
 	private double[] getFormattedResultForParticipantForEvent(Participant p, Event e){
 		ArrayList<Result> results = new ArrayList<>();

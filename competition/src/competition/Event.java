@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Event {
-	private ArrayList<Result> results = new ArrayList<Result>();
+	private ArrayList<Result> results = new ArrayList<>();
+	private ArrayList<Placement> placements = new ArrayList<>();
 	
 	private String name;
 	private int attempts;
@@ -26,18 +27,20 @@ public class Event {
 			Result thisResult = tempResults.get(i);
 			Result nextResult = null;
 			Placement placement = getPlacementForIndex(placementIndex,thisResult);
-			if(tempResults.size()>i+1){
+			if(tempResults.size()>i+1){//only set nextResult if we actually have a next result
 				nextResult = tempResults.get(i+1);
 			}
 			//if thisResult is equal to the next result we don't increase placementIndex but we do increase skipNextNumber
-			if(1+i<tempResults.size() && skipNextNumbers==0 && thisResult.getResult()==nextResult.getResult()){
+			if(nextResult!=null && skipNextNumbers==0 && thisResult.getResult()==nextResult.getResult()){
 				thisResult.setPlacement(placement);
+				placements.add(placement);
 				skipNextNumbers++;
 				printNext = true;
 			}
 			//if thisResult and the one before was equal print this with the same index and increase placementIndex
 			else if(printNext){
 				thisResult.setPlacement(placement);
+				placements.add(placement);
 				if(1+i<tempResults.size()&& thisResult.getResult()==nextResult.getResult()){
 					printNext = true;
 					skipNextNumbers++;
@@ -56,6 +59,7 @@ public class Event {
 			//if thisResult is not equal to the next we set it out at placementIndex
 			else{
 				thisResult.setPlacement(placement);
+				placements.add(placement);
 				placementIndex++;
 			}		
 		}
@@ -76,14 +80,6 @@ public class Event {
 			}
 		}
 		return medals;
-	}
-	public void printResults(){
-		Collections.sort(results);
-		for(Result r : results){
-			if(r.getPlacementIndex()>0){
-				System.out.println(r.printResult());
-			}
-		}
 	}
 	public boolean checkAllowedMoreAttempts(Participant p){
 		if(checkNumberAttempts(p)<attempts){
@@ -199,5 +195,9 @@ public class Event {
 	}
 	public ArrayList<Result> getResults(){
 		return results;
+	}
+	public ArrayList<Placement> getPlacements(){
+		updatePlacement();
+		return placements;
 	}
 }
