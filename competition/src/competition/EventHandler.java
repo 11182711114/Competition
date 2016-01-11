@@ -103,7 +103,7 @@ public class EventHandler {
 	public boolean getBiggerBetterForEventByName(String eName){
 		return getEventByName(eName).getBiggerBetter();
 	}
-	public void printResults(Participant p){
+	public void printResultsByParticipant(Participant p){
 		boolean hasResults = false;
 		for(Event e : events){
 			if(e.checkNumberAttempts(p)>0){
@@ -136,7 +136,7 @@ public class EventHandler {
 		if(!Double.isNaN(temp)){
 			int id = (int) temp;
 			if(comp.doesParticipantExist(id)){
-				printResults(comp.getParticipantByID(id));
+				printResultsByParticipant(comp.getParticipantByID(id));
 			}
 			else{
 				System.out.println("No participant with ID " + id);
