@@ -247,34 +247,6 @@ public class Competition {
 			return Double.NaN;
 		}
 	}
-	private String readFromFile(){
-		if(sc==null){
-			setScanner();
-		}
-		if(sc.hasNextLine()){
-			return sc.nextLine();
-		}
-		else{
-			System.exit(0);
-		}
-		return null;
-	}
-	private void setScanner(){
-		try {
-			sc = new Scanner(new FileReader(file));
-		} 
-		catch (FileNotFoundException e) {
-			System.out.println("Something went wrong reading from file");
-		}
-	}
-	public boolean isStringNumber(String s){
-		try{
-			Double.parseDouble(s);
-		}catch(Exception e){
-			return false;
-		}
-		return true;
-	}
 	public String normalize(String s, int j){
 		/*
 		 *remove forbidden character, it will;
@@ -332,9 +304,38 @@ public class Competition {
 			return output;
 		}
 	}
+	public boolean isStringNumber(String s){
+		try{
+			Double.parseDouble(s);
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
 	public ArrayList<Participant> getParticipants(){
 		return participants;
 	}
+		//file functions
+	private void setScanner(){
+		try {
+			sc = new Scanner(new FileReader(file));
+		} 
+		catch (FileNotFoundException e) {
+			System.out.println("Something went wrong reading from file");
+		}
+	}
+	private String readFromFile(){
+		if(sc==null){
+			setScanner();
+		}
+		if(sc.hasNextLine()){
+			return sc.nextLine();
+		}
+		else{
+			System.exit(0);
+		}
+		return null;
+	}	
 		//participant functions
 	private void addParticipant(){
 		String gName;
@@ -408,6 +409,7 @@ public class Competition {
 		}
 		return false;
 	}
+		//team functions
 	private ArrayList<Team> getTeams(){
 		ArrayList<Team> teams = new ArrayList<>();
 		for(Participant p : participants){

@@ -10,6 +10,7 @@ public class EventHandler {
 	public EventHandler(Competition c){
 		comp = c;
 	}
+	
 	public ArrayList<Event> getAllEvents(){
 		return events;
 	}
@@ -109,7 +110,7 @@ public class EventHandler {
 			if(e.checkNumberAttempts(p)>0){
 				hasResults = true;
 				System.out.print("Results for "+ p.getFullName() +" in "+ e.getName() +": ");
-				double[] results = getFormattedResultForParticipantForEvent(p,e);
+				double[] results = getFormattedResultForParticipantByEvent(p,e);
 				for(int i = 0; i<results.length;i++){
 					if(i+1>=results.length){
 						System.out.println(results[i]);
@@ -146,7 +147,7 @@ public class EventHandler {
 			}
 		}
 	}
-	private double[] getFormattedResultForParticipantForEvent(Participant p, Event e){
+	private double[] getFormattedResultForParticipantByEvent(Participant p, Event e){
 		ArrayList<Result> results = new ArrayList<>();
 		ArrayList<Result> tempResults = e.getResults();
 		for(Result r : tempResults){

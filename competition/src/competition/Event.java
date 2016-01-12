@@ -16,6 +16,7 @@ public class Event {
 		 attempts = tries;
 		 biggerBetter = largerBetter;
 	}
+	
 	public void updatePlacement(){
 		ArrayList<Result> tempResults = getUniqueResults();
 		Collections.sort(tempResults);

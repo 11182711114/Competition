@@ -10,8 +10,7 @@ public class Team implements Comparable<Team>{
 		name = teamName;				
 	}
 	
-	//removes given participant from participants and returns true if the array is empty
-	public boolean removeParticipant(Participant p){
+	public boolean removeParticipant(Participant p){//removes given participant from participants and returns true if the array is empty
 		participants.remove(p);
 		if(participants.isEmpty()){
 			return true;

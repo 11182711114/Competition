@@ -17,6 +17,7 @@ public class Participant {
 		this.id = id;
 		this.competition = c;
 	}
+	
 	private Team makeTeam(String name,Competition comp){//creates a new team if one with that name does not exist, returns true if makes a team
 		Team t = doesTeamExist(name, comp);
 		if(t==null){
@@ -46,6 +47,9 @@ public class Participant {
 	}
 	public void addResult(Result r){
 		results.add(r);
+	}
+	public String namesToString(){
+		return name + " " + familyName + " for " + team.getName();
 	}
 	//get and set
 	public void setName(String s){
@@ -77,9 +81,6 @@ public class Participant {
 	}
 	public void setCompetition(Competition c) {
 		this.competition = c;
-	}
-	public String namesToString(){
-		return name + " " + familyName + " for " + team.getName();
 	}
 	public Team getTeam(){
 		return team;

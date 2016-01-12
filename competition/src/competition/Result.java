@@ -11,6 +11,7 @@ public class Result implements Comparable<Result>{
 		participant = inputParticipant;
 		event = e;
 	}
+	
 	public String toPrint(){
 		return "Placement: "+placement.getPlacement()+" Result:"+result+" Event name: "+ event.getName() +" participant ID: "+participant.getID();
 	}

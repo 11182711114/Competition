@@ -9,6 +9,7 @@ public class Placement implements Comparable<Placement>{
 	public Placement(int placement){
 		this.placement = placement;
 	}
+	
 	public boolean removeResult(Result r){
 		return results.remove(r);
 	}
