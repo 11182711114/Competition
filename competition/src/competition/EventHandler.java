@@ -213,11 +213,4 @@ public class EventHandler {
 			e.updatePlacement();
 		}
 	}
-	public boolean reinitialize(){
-		events.clear();
-		if(events.isEmpty()){
-			return true;
-		}
-		return false;
-	}
 }

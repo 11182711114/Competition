@@ -10,7 +10,7 @@ import java.util.Scanner;
  * TODO;
  * 	high priority
  * 	med priority
- * 		clean code
+ * 		clean code - somewhat done
  * 	low priority
  */
 public class Competition {
@@ -31,14 +31,14 @@ public class Competition {
 	
 	public static void main(String[] args){
 		Competition thisCompetition = new Competition();
-		thisCompetition.initialize(thisCompetition);
+		thisCompetition.initialize();
 		thisCompetition.run();	
 		thisCompetition.exit();
 	}
 	//main functions
-	private void initialize(Competition c){
-		db = new Database(c);
-		eventHandler = new EventHandler(c);
+	private void initialize(){
+		db = new Database(this);
+		eventHandler = new EventHandler(this);
 	}
 	private void run(){
 		menu();
@@ -206,7 +206,7 @@ public class Competition {
 		//Reset nrOfRemoved, go through all of the ArrayLists and erase everything
 		participantID=100;
 		
-		eventHandler.reinitialize();
+		eventHandler = new EventHandler(this);
 		participants.clear();
 	}
 	private void message(String s){
