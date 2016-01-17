@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Database {
-	private File folder = new File("./db/");
 	
+	private File folder = new File("./db/");	
 	private File file;
 	private Competition comp;
 	
