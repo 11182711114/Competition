@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Team implements Comparable<Team>{
 	private ArrayList<Participant> participants = new ArrayList<Participant>();
-	String name;
+	private String name;
 	
 	public Team(String teamName){
 		name = teamName;				
