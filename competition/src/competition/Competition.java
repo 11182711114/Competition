@@ -19,7 +19,7 @@ public class Competition {
 	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {};
 	
 	private File file;
-	private File folder = new File("./commands/");
+	private File folder;
 	private Scanner sc;
 	
 	private Database db;
@@ -31,14 +31,14 @@ public class Competition {
 	
 	public static void main(String[] args){
 		Competition thisCompetition = new Competition();
-		thisCompetition.initialize();
-		thisCompetition.run();	
-		thisCompetition.exit();
+		thisCompetition.start();
+		
 	}
 	//main functions
 	private void initialize(){
 		db = new Database(this);
 		eventHandler = new EventHandler(this);
+		folder = new File("./commands/");
 	}
 	private void run(){
 		menu();
@@ -48,6 +48,11 @@ public class Competition {
 	}
 	private void exit(){
 		saveDb();
+	}
+	private void start(){
+		this.initialize();
+		this.run();	
+		this.exit();
 	}
 	//database & file functions
 	private void saveDb(){
