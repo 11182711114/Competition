@@ -21,6 +21,7 @@ public class Competition {
 	private File file;
 	private File folder;
 	private Scanner sc;
+	private Scanner systemIn;
 	
 	private Database db;
 	private EventHandler eventHandler;
@@ -39,6 +40,7 @@ public class Competition {
 		db = new Database(this);
 		eventHandler = new EventHandler(this);
 		folder = new File("./commands/");
+		systemIn = new Scanner(System.in);
 	}
 	private void run(){
 		menu();
@@ -226,10 +228,10 @@ public class Competition {
 			System.out.println(("# "+s));
 			return s;
 		}
-		@SuppressWarnings("resource")
-		Scanner tangentbord = new Scanner(System.in);
 		System.out.print(outputGuideString);
-		return tangentbord.nextLine();	
+		String s = systemIn.nextLine();
+		System.out.println();
+		return s;	
 	}
 	public Double inputNumber(String outputGuideString){
 		String dOutput;
@@ -239,10 +241,9 @@ public class Competition {
 			dOutput = s;
 		}
 		else{
-		@SuppressWarnings("resource")
-		Scanner tangentbord = new Scanner(System.in);
 		System.out.print(outputGuideString);
-		dOutput = tangentbord.nextLine();
+		dOutput = systemIn.nextLine();
+		System.out.println();
 		}
 		if(isStringNumber(dOutput)){
 			return Double.parseDouble(dOutput);
