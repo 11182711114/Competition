@@ -230,7 +230,6 @@ public class Competition {
 		}
 		System.out.print(outputGuideString);
 		String s = systemIn.nextLine();
-		System.out.println();
 		return s;	
 	}
 	public Double inputNumber(String outputGuideString){
@@ -243,7 +242,6 @@ public class Competition {
 		else{
 		System.out.print(outputGuideString);
 		dOutput = systemIn.nextLine();
-		System.out.println();
 		}
 		if(isStringNumber(dOutput)){
 			return Double.parseDouble(dOutput);
