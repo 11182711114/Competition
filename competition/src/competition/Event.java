@@ -7,7 +7,7 @@ public class Event {
 	private ArrayList<Result> results = new ArrayList<>();
 	private ArrayList<Placement> placements = new ArrayList<>();
 	
-	private String names;
+	private String name;
 	private int attempts;
 	private boolean biggerBetter;
 	
