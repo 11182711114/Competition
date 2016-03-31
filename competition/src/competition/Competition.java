@@ -17,6 +17,8 @@ public class Competition {
 	private static final int MESSAGE_NUMBER_CHARS_PER_LINE = 56; //relative number, absolute is +4 , done like this to absolutely avoid going into an infinite loop if it's set to under 4
 	private static final char MESSAGE_BOX_CHAR = '*';
 	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {};
+	private static final String NEW_LINE = System.getProperty("line.separator");
+	//private static final String NEW_LINE = "\n";
 	
 	private File file;
 	private File folder;
@@ -28,7 +30,6 @@ public class Competition {
 	
 	private ArrayList<Participant> participants = new ArrayList<>();
 	private int participantID = 100;
-	
 	
 	public static void main(String[] args){
 		Competition thisCompetition = new Competition();
@@ -50,6 +51,8 @@ public class Competition {
 	}
 	private void exit(){
 		saveDb();
+		sc.close();
+		systemIn.close();
 	}
 	private void start(){
 		this.initialize();
@@ -225,23 +228,27 @@ public class Competition {
 	public String inputString(String outputGuideString){
 		if(isFileSet()){
 			String s = readFromFile();
-			System.out.println(("# "+s));
 			return s;
 		}
 		System.out.print(outputGuideString);
 		String s = systemIn.nextLine();
+		if(!s.contains(NEW_LINE)){
+			System.out.print(s+NEW_LINE);
+		}
 		return s;	
 	}
 	public Double inputNumber(String outputGuideString){
 		String dOutput;
 		if(isFileSet()){
 			String s = readFromFile();
-			System.out.println("# "+s);
 			dOutput = s;
 		}
 		else{
-		System.out.print(outputGuideString);
-		dOutput = systemIn.nextLine();
+			System.out.print(outputGuideString);
+			dOutput = systemIn.nextLine();
+		}
+		if(!dOutput.contains(NEW_LINE)){
+			System.out.print(dOutput+NEW_LINE);
 		}
 		if(isStringNumber(dOutput)){
 			return Double.parseDouble(dOutput);

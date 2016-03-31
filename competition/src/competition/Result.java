@@ -13,7 +13,7 @@ public class Result implements Comparable<Result>{
 	}
 	
 	public String toPrint(){
-		return "Placement: "+placement.getPlacement()+" Result:"+result+" Event name: "+ event.getName() +" participant ID: "+participant.getID();
+		return placement.getPlacement() +" "+ result +" "+ participant.getFullName() +" "+ participant.getTeamName();
 	}
 	@Override
 	public int compareTo(Result r) {

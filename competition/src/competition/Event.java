@@ -16,8 +16,13 @@ public class Event {
 		 attempts = tries;
 		 biggerBetter = largerBetter;
 	}
-	
+	private void resetResultPlacements(){
+		for(Result r : results){
+			r.setPlacement(null);
+		}
+	}
 	public void updatePlacement(){
+		resetResultPlacements();
 		ArrayList<Result> tempResults = getUniqueResults();
 		Collections.sort(tempResults);
 		placements.clear();//clear placement to prevent multiple refrences to the same placement

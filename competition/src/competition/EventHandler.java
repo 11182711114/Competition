@@ -173,20 +173,16 @@ public class EventHandler {
 				if(e!=null){
 					if(e.checkAllowedMoreAttempts(p)){
 						double thisResultValue;
-						boolean inproperValue = false;
-						do{
-							if(inproperValue){
-								System.out.println("Error 09: Incorrect input, only results >0 accepted");						
-							}					
+						boolean inproperValue = true;
+						do{				
 							thisResultValue = comp.inputNumber("Result as decimal number:");
 							if(!Double.isNaN(thisResultValue)){
-								if(thisResultValue<0){
-									inproperValue = true;
-								}
-								else{
+								if(thisResultValue>=0)
 									inproperValue = false;
-								}
 							}
+							if(inproperValue){
+								System.out.println("Error 09: Incorrect input, only results >=0 accepted");						
+							}	
 						}while(inproperValue);
 						Result r = new Result(p,e,thisResultValue);
 						e.addResult(r);
