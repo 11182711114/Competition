@@ -15,6 +15,9 @@ public class Result implements Comparable<Result>{
 	public String toPrint(){
 		return placement.getPlacement() +" "+ result +" "+ participant.getFullName() +" "+ participant.getTeamName();
 	}
+	public String confirmString(){
+		return participant.getFullName() +" from "+ participant.getTeamName() +" in "+ event.getName() +": "+ result;
+	}
 	@Override
 	public int compareTo(Result r) {
 		double compare = result-r.getResult();

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 /*
  * TODO;
@@ -16,9 +17,10 @@ import java.util.Scanner;
 public class Competition {
 	private static final int MESSAGE_NUMBER_CHARS_PER_LINE = 56; //relative number, absolute is +4 , done like this to absolutely avoid going into an infinite loop if it's set to under 4
 	private static final char MESSAGE_BOX_CHAR = '*';
+	public static final int DO_NOTHING = 0;
+	public static final int FORCE_CAPITALIZE = 1;
+	public static final int FORCE_LOWERCASE = 2;
 	private static final char[] NORMALIZE_FORBIDDEN_CHARACTERS = {};
-	private static final String NEW_LINE = System.getProperty("line.separator");
-	//private static final String NEW_LINE = "\n";
 	
 	private File file;
 	private File folder;
@@ -51,8 +53,10 @@ public class Competition {
 	}
 	private void exit(){
 		saveDb();
-		sc.close();
+		if(sc!=null)
+			sc.close();
 		systemIn.close();
+		System.exit(0);
 	}
 	private void start(){
 		this.initialize();
@@ -138,7 +142,7 @@ public class Competition {
 	}
 	//run functions
 	private String readCommand(){
-		return normalize(inputString("Listening:"),2);
+		return normalize(inputString("Listening:"),FORCE_LOWERCASE);
 	}
 	private boolean handleCommands(String userInput){
 		if(userInput!=null){
@@ -226,14 +230,17 @@ public class Competition {
 	}
 			//public functions
 	public String inputString(String outputGuideString){
+		String s = "";
 		if(isFileSet()){
-			String s = readFromFile();
+			s = readFromFile();
 			return s;
 		}
 		System.out.print(outputGuideString);
-		String s = systemIn.nextLine();
-		if(!s.contains(NEW_LINE)){
-			System.out.print(s+NEW_LINE);
+		try{
+			s = systemIn.nextLine();
+		}catch(NoSuchElementException e){
+			System.out.println("No new line detected; Exiting");
+			exit();
 		}
 		return s;	
 	}
@@ -242,13 +249,9 @@ public class Competition {
 		if(isFileSet()){
 			String s = readFromFile();
 			dOutput = s;
-		}
-		else{
+		}else{
 			System.out.print(outputGuideString);
 			dOutput = systemIn.nextLine();
-		}
-		if(!dOutput.contains(NEW_LINE)){
-			System.out.print(dOutput+NEW_LINE);
 		}
 		if(isStringNumber(dOutput)){
 			return Double.parseDouble(dOutput);
@@ -354,21 +357,21 @@ public class Competition {
 		String tName;
 		
 		do{
-			gName = normalize(inputString("Participants given name:"),1);
+			gName = normalize(inputString("Participants given name:"),FORCE_CAPITALIZE);
 			if(gName==null){
 				System.out.println("Names cannot be empty");
 			}
 		}while(gName==null);
 		
 		do{
-			fName = normalize(inputString("Participants family name:"),1);
+			fName = normalize(inputString("Participants family name:"),FORCE_CAPITALIZE);
 			if(fName==null){
 				System.out.println("Names cannot be empty");
 			}
 		}while(fName==null);
 		
 		do{
-			tName = normalize(inputString("Participants team name:"),1);
+			tName = normalize(inputString("Participants team name:"),FORCE_CAPITALIZE);
 			if(tName==null){
 				System.out.println("Names cannot be empty");
 			}

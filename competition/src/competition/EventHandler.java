@@ -20,7 +20,7 @@ public class EventHandler {
 		boolean isBiggerBetter = false;
 		
 		do{
-			eventName = comp.normalize(comp.inputString("Event name:"),1);
+			eventName = comp.normalize(comp.inputString("Event name:"),Competition.FORCE_CAPITALIZE);
 			if(eventName==null){
 				System.out.println("Names cannot be empty");
 			}
@@ -48,7 +48,7 @@ public class EventHandler {
 			String biggerBetter;
 			boolean incorrectInput = false;
 			do{
-				biggerBetter = comp.normalize(comp.inputString("Bigger better? (Y/N):"),2);
+				biggerBetter = comp.normalize(comp.inputString("Bigger better? (Y/N):"),Competition.FORCE_LOWERCASE);
 				if(!biggerBetter.equals("y") && !biggerBetter.equals("n") && !biggerBetter.equals("yes") && !biggerBetter.equals("no")){
 					incorrectInput = true;
 					System.out.println("Error 03: Incorrect input, allowed sepparated by \",\": y,n,yes,no");
@@ -168,7 +168,7 @@ public class EventHandler {
 			
 			Participant p = comp.getParticipantByID(pID);
 			if(p!=null){
-				String eventName = comp.normalize(comp.inputString("Event name:"),1);
+				String eventName = comp.normalize(comp.inputString("Event name:"),Competition.FORCE_CAPITALIZE);
 				Event e = getEventByName(eventName);
 				if(e!=null){
 					if(e.checkAllowedMoreAttempts(p)){
@@ -187,7 +187,7 @@ public class EventHandler {
 						Result r = new Result(p,e,thisResultValue);
 						e.addResult(r);
 						p.addResult(r);
-						System.out.println(r + " has been added");
+						System.out.println("Added result for " + r.confirmString());
 						e.updatePlacement();
 					}
 					else{
