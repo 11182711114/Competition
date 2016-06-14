@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Scanner;
 /*
  * TODO;
@@ -20,6 +21,9 @@ public class Competition {
 	private static final String NEW_LINE = System.getProperty("line.separator");
 	//private static final String NEW_LINE = "\n";
 	
+	//test value(s)
+	private boolean pipedInput;
+	
 	private File file;
 	private File folder;
 	private Scanner sc;
@@ -33,8 +37,8 @@ public class Competition {
 	
 	public static void main(String[] args){
 		Competition thisCompetition = new Competition();
+		thisCompetition.setTest(args);
 		thisCompetition.start();
-		
 	}
 	//main functions
 	private void initialize(){
@@ -42,6 +46,12 @@ public class Competition {
 		eventHandler = new EventHandler(this);
 		folder = new File("./commands/");
 		systemIn = new Scanner(System.in);
+	}
+	private void setTest(String[] args){
+		for(String s : args){
+			if(s.contains("-p"))
+				pipedInput = true;
+		}
 	}
 	private void run(){
 		menu();
@@ -232,9 +242,8 @@ public class Competition {
 		}
 		System.out.print(outputGuideString);
 		String s = systemIn.nextLine();
-		if(!s.contains(NEW_LINE)){
-			System.out.print(s+NEW_LINE);
-		}
+		if(pipedInput)
+			System.out.println(s);
 		return s;	
 	}
 	public Double inputNumber(String outputGuideString){
@@ -246,9 +255,8 @@ public class Competition {
 		else{
 			System.out.print(outputGuideString);
 			dOutput = systemIn.nextLine();
-		}
-		if(!dOutput.contains(NEW_LINE)){
-			System.out.print(dOutput+NEW_LINE);
+			if(pipedInput)
+				System.out.println(dOutput);
 		}
 		if(isStringNumber(dOutput)){
 			return Double.parseDouble(dOutput);
