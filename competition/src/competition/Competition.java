@@ -61,7 +61,8 @@ public class Competition {
 	}
 	private void exit(){
 		saveDb();
-		sc.close();
+		if(sc!=null)
+			sc.close();
 		systemIn.close();
 	}
 	private void start(){
